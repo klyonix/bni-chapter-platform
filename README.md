@@ -12,9 +12,6 @@ hosted on GitHub Pages.
 
 **Hosted by KlyONIX Tech Consulting Pvt Ltd.**
 
-> **Deployment details** (production domain, DNS records, hosts) are kept in a
-> separate private note and are intentionally **not** committed to this repo.
-
 ---
 
 ## Overview
