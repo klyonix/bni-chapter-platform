@@ -6,10 +6,10 @@ export default function HomePage() {
           BNI Power Teams
         </h1>
         <p className="mt-4 text-lg font-medium text-neutral-700">
-          Project Initialized Successfully
+          Project Initialized Successfully...
         </p>
-        <p className="mt-8 text-sm uppercase tracking-widest text-neutral-500">
-          Hosted by KlyONIX
+        <p className="mt-8 text-sm tracking-widest text-neutral-500">
+          Hosted by KlyONIX Tech
         </p>
       </div>
     </main>
