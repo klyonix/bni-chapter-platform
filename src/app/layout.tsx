@@ -1,5 +1,31 @@
 import type { Metadata } from 'next';
+import { Inter_Tight, Newsreader } from 'next/font/google';
 import '@/styles/globals.css';
+
+/**
+ * Fonts are self-hosted by next/font at build time — no runtime request to
+ * Google, no render-blocking stylesheet, no consent surface.
+ *
+ * Newsreader (serif) carries display type, member names and the referral
+ * pull-quote. Inter Tight carries UI and body. The pairing is the deliberate
+ * anti-template choice: a grotesque throughout is what every generated site does.
+ */
+const newsreader = Newsreader({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-display',
+  weight: ['400', '500'],
+  style: ['normal', 'italic'], // italic is used by the Ideal Referral quote
+  fallback: ['Georgia', 'Times New Roman', 'serif'],
+});
+
+const interTight = Inter_Tight({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-sans',
+  weight: ['400', '500', '600'],
+  fallback: ['system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+});
 
 // Site URL is provided at build time via NEXT_PUBLIC_SITE_URL so the production
 // domain is not hardcoded in the repository. Falls back to a neutral value.
@@ -46,11 +72,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en-IN" className={`${newsreader.variable} ${interTight.variable}`}>
       <body>{children}</body>
     </html>
   );

@@ -8,6 +8,17 @@
  * path (e.g. username.github.io/bni-chapter-platform), set BASE_PATH.
  */
 
+// A missing NEXT_PUBLIC_SITE_URL silently falls back to a placeholder, which would
+// ship every canonical tag, OG URL and sitemap entry pointing at the wrong host —
+// a failure invisible in the UI and expensive to discover after launch. Fail the
+// build instead. Local dev keeps the fallback so `next dev` needs no setup.
+if (process.env.CI && !process.env.NEXT_PUBLIC_SITE_URL) {
+  throw new Error(
+    'NEXT_PUBLIC_SITE_URL must be set in CI. Expected https://azpire.klyonix.in — ' +
+      'see the env block in .github/workflows/deploy.yml.'
+  );
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',

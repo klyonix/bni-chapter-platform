@@ -2,14 +2,67 @@
 @tailwind components;
 @tailwind utilities;
 
+/**
+ * Design tokens.
+ *
+ * Colours are stored as raw RGB channels so Tailwind's alpha modifiers
+ * (e.g. `bg-ink/5`, `ring-accent/40`) resolve against them.
+ *
+ * Contrast ratios below are measured against Paper (#FAF9F7), not estimated.
+ * Anything carrying text is AA (>= 4.5:1) at body size.
+ */
 :root {
-  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* --font-display and --font-sans are owned by next/font (see app/layout.tsx),
+     which injects them via a class on <html>. Declaring them here too would be
+     a specificity tie decided by source order. */
+
+  /* Ink — warm near-black scale. Never pure #000. */
+  --ink: 20 17 15; /* #14110F  17.87:1  headings */
+  --ink-700: 61 56 51; /* #3D3833  11.02:1  body */
+  --ink-500: 107 99 91; /* #6B635B   5.60:1  secondary, company names */
+  --ink-400: 120 111 102; /* #786F66   4.68:1  captions, meta — lightest AA text */
+  --ink-200: 168 160 153; /* #A8A099   2.45:1  NOT TEXT. Disabled controls only. */
+
+  /* Surfaces */
+  --hairline: 232 228 223; /* #E8E4DF  1px rules, card borders */
+  --paper: 250 249 247; /* #FAF9F7  page — warm off-white, not pure white */
+  --surface: 255 255 255; /* #FFFFFF  cards, lifted by 4% not by shadow */
+
+  /* Accent — BNI red. Fills and rules. Never a large surface. */
+  --accent: 207 32 48; /* #CF2030   5.11:1 on paper; 5.38:1 white-on-fill */
+  --accent-ink: 138 22 32; /* #8A1620   9.01:1  red text at length */
+
+  /* WhatsApp. Darkened from brand #128C7E, which is 4.14:1 with white
+     and fails AA. This passes at 5.21:1 and reads calmer besides. */
+  --whatsapp: 15 122 110; /* #0F7A6E */
 }
 
 html {
   scroll-behavior: smooth;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  /* Motion is decorative here; content must never depend on it. */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 body {
-  @apply bg-white text-neutral-900 antialiased;
+  @apply bg-paper font-sans text-ink antialiased;
+  /* Prevent iOS bumping type in landscape without an explicit opt-in. */
+  -webkit-text-size-adjust: 100%;
+}
+
+/* A single, consistent focus ring. Visible on every interactive surface. */
+:focus-visible {
+  @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-paper;
 }

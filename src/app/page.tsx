@@ -1,17 +1,22 @@
+import { Container } from '@/components/primitives/Container';
+
+/**
+ * Placeholder home. Replaced in full at roadmap phase 7.
+ *
+ * Kept on the design tokens rather than left on the scaffold's defaults,
+ * because this page is what azpire.klyonix.in serves today.
+ */
 export default function HomePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-neutral-50 px-6 text-center">
-      <div className="max-w-xl">
-        <h1 className="text-4xl font-bold tracking-tight text-brand sm:text-5xl">
-          BNI Power Teams
-        </h1>
-        <p className="mt-4 text-lg font-medium text-neutral-700">
-          Project Initialized Successfully...
+    <main className="flex min-h-screen items-center">
+      <Container>
+        <p className="text-micro uppercase text-ink-400">BNI Azpire</p>
+        <h1 className="mt-3 font-display text-display-l text-ink">Coimbatore Rural</h1>
+        <p className="mt-4 text-body-l text-ink-700">
+          The chapter portfolio is being built. The Civil Power Team page goes live here first.
         </p>
-        <p className="mt-8 text-sm tracking-widest text-neutral-500">
-          Hosted by KlyONIX Tech
-        </p>
-      </div>
+        <p className="mt-10 text-meta text-ink-400">Hosted by KlyONIX Tech Consulting</p>
+      </Container>
     </main>
   );
 }
