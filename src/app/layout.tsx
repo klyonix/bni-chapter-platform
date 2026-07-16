@@ -6,14 +6,22 @@ const siteUrl = 'https://azpire.klyonix.in';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'BNI Chapter Platform',
-    template: '%s | BNI Chapter Platform',
+    default: 'BNI Azpire — Power Teams',
+    template: '%s | BNI Azpire',
   },
   description:
-    'A modular platform for BNI chapters, power teams, and members. Hosted by KlyONIX.',
-  applicationName: 'BNI Chapter Platform',
+    'Power team portfolio for BNI Azpire, Greater Coimbatore — power teams and their members. Hosted by KlyONIX.',
+  applicationName: 'BNI Azpire Power Teams',
   authors: [{ name: 'KlyONIX Tech Consulting Pvt Ltd' }],
-  keywords: ['BNI', 'Chapter', 'Power Team', 'Networking', 'Referrals', 'KlyONIX'],
+  keywords: [
+    'BNI',
+    'BNI Azpire',
+    'Greater Coimbatore',
+    'Power Team',
+    'Networking',
+    'Referrals',
+    'KlyONIX',
+  ],
   icons: {
     // Favicon placeholder — replace public/favicon.ico with the real asset.
     icon: '/favicon.ico',
@@ -21,25 +29,25 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: siteUrl,
-    siteName: 'BNI Chapter Platform',
-    title: 'BNI Chapter Platform',
+    siteName: 'BNI Azpire Power Teams',
+    title: 'BNI Azpire — Power Teams',
     description:
-      'A modular platform for BNI chapters, power teams, and members. Hosted by KlyONIX.',
+      'Power team portfolio for BNI Azpire, Greater Coimbatore — power teams and their members. Hosted by KlyONIX.',
     // OpenGraph image placeholder — add public/images/og-default.png later.
     images: [
       {
         url: '/images/og-default.png',
         width: 1200,
         height: 630,
-        alt: 'BNI Chapter Platform',
+        alt: 'BNI Azpire Power Teams',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'BNI Chapter Platform',
+    title: 'BNI Azpire — Power Teams',
     description:
-      'A modular platform for BNI chapters, power teams, and members. Hosted by KlyONIX.',
+      'Power team portfolio for BNI Azpire, Greater Coimbatore — power teams and their members. Hosted by KlyONIX.',
     images: ['/images/og-default.png'],
   },
 };
