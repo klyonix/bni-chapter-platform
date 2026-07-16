@@ -1,10 +1,15 @@
-# BNI Chapter Platform
+# BNI Azpire — Power Teams
 
-A modular web platform for BNI chapters, power teams, and members — built as a
-statically-exported Next.js site and hosted on GitHub Pages.
+A **power team portfolio** for **BNI Azpire, Greater Coimbatore** — showcasing
+the chapter's power teams and their members. Built as a statically-exported
+Next.js site and hosted on GitHub Pages.
 
 > **Status:** Project scaffold. The structure and deployment pipeline are ready;
 > product features are intentionally **not** implemented yet.
+
+> **Scope:** This is a portfolio for the power teams of a single chapter (BNI
+> Azpire). It is **not** a multi-chapter platform and does not manage BNI
+> chapters.
 
 **Hosted by [KlyONIX Tech Consulting Pvt Ltd](https://klyonix.com).**
 Production domain: **https://azpire.klyonix.in**
@@ -13,18 +18,18 @@ Production domain: **https://azpire.klyonix.in**
 
 ## Overview
 
-The platform is designed from day one to serve **multiple chapters** and
-**multiple power teams** from a single codebase. Routing and data are structured
-so new teams and members are added as data, not as bespoke code.
+The site presents the **power teams** of BNI Azpire and the **members** within
+each team from a single codebase. Routing and data are structured so new power
+teams and members are added as data, not as bespoke code.
 
-Planned (future) capabilities: multiple BNI chapters, multiple power teams,
-member profiles, QR landing pages, referral tracking, visitor registration, and
-analytics. None of these are built yet — see [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+Planned (future) capabilities: power team pages, member profiles, QR landing
+pages, referral tracking, visitor registration, and analytics. None of these
+are built yet — see [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 ### Planned URL architecture
 
 ```
-/                  Chapter home
+/                  Home (BNI Azpire power teams)
 /civil             Power team: Civil
 /manufacturing     Power team: Manufacturing
 /healthcare        Power team: Healthcare
@@ -216,4 +221,4 @@ placeholders when brand assets are ready:
 
 ## License
 
-Proprietary — © KlyONIX Tech Consulting Pvt Ltd. All rights reserved.
+Released under the [MIT License](LICENSE). © 2026 KlyONIX Tech Consulting Pvt Ltd.
