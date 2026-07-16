@@ -1,12 +1,12 @@
 /**
- * Core domain type placeholders for the BNI Azpire power team portfolio.
+ * Core domain type placeholders for the power team portfolio.
  *
  * These interfaces describe the future data model so components, data
  * loaders, and routes can be typed consistently as features land. They
  * are intentionally minimal — extend them when building real features.
  * No feature logic should live here.
  *
- * Scope: a single chapter (BNI Azpire). Power teams and their members —
+ * Scope: a single BNI chapter. Power teams and their members —
  * no chapter-management model.
  */
 
