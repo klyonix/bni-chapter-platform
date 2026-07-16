@@ -20,12 +20,17 @@ No features are implemented yet — this is scaffold only.
 | `public/icons`    | Icon assets.                                                   |
 | `public/members`  | Member profile images / assets for future member pages.        |
 
+## Scope
+
+This is a **power team portfolio for BNI Azpire, Greater Coimbatore** — a single
+chapter. It is not a multi-chapter platform and does not manage BNI chapters.
+
 ## Planned URL architecture
 
-The same codebase serves any chapter and any power team:
+The codebase serves the power teams of BNI Azpire and their members:
 
 ```
-/                     Chapter home
+/                     Home (BNI Azpire power teams)
 /civil                Power team: Civil
 /manufacturing        Power team: Manufacturing
 /healthcare           Power team: Healthcare
@@ -38,9 +43,9 @@ Power teams are intended to be data-driven (see `src/types` and future
 
 ## Future feature areas (not yet built)
 
-Multiple BNI chapters, multiple power teams, member profiles, QR landing
-pages, referral tracking, visitor registration, and analytics. Keep modules
-decoupled so these can be added incrementally.
+Power team pages, member profiles, QR landing pages, referral tracking, visitor
+registration, and analytics. Keep modules decoupled so these can be added
+incrementally.
 
 ## Static export constraints
 
