@@ -22,15 +22,15 @@ No features are implemented yet — this is scaffold only.
 
 ## Scope
 
-This is a **power team portfolio for BNI Azpire, Greater Coimbatore** — a single
-chapter. It is not a multi-chapter platform and does not manage BNI chapters.
+This is a **power team portfolio for a single BNI chapter**. It is not a
+multi-chapter platform and does not manage BNI chapters.
 
 ## Planned URL architecture
 
-The codebase serves the power teams of BNI Azpire and their members:
+The codebase serves the power teams of the chapter and their members:
 
 ```
-/                     Home (BNI Azpire power teams)
+/                     Home (chapter power teams)
 /civil                Power team: Civil
 /manufacturing        Power team: Manufacturing
 /healthcare           Power team: Healthcare
