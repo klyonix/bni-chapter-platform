@@ -1,24 +1,25 @@
-# BNI Azpire — Power Teams
+# BNI Power Teams Portfolio
 
-A **power team portfolio** for **BNI Azpire, Greater Coimbatore** — showcasing
-the chapter's power teams and their members. Built as a statically-exported
-Next.js site and hosted on GitHub Pages.
+A **power team portfolio** for a single BNI chapter — showcasing the chapter's
+power teams and their members. Built as a statically-exported Next.js site and
+hosted on GitHub Pages.
 
 > **Status:** Project scaffold. The structure and deployment pipeline are ready;
 > product features are intentionally **not** implemented yet.
 
-> **Scope:** This is a portfolio for the power teams of a single chapter (BNI
-> Azpire). It is **not** a multi-chapter platform and does not manage BNI
-> chapters.
+> **Scope:** This is a portfolio for the power teams of a single chapter. It is
+> **not** a multi-chapter platform and does not manage BNI chapters.
 
-**Hosted by [KlyONIX Tech Consulting Pvt Ltd](https://klyonix.com).**
-Production domain: **https://azpire.klyonix.in**
+**Hosted by KlyONIX Tech Consulting Pvt Ltd.**
+
+> **Deployment details** (production domain, DNS records, hosts) are kept in a
+> separate private note and are intentionally **not** committed to this repo.
 
 ---
 
 ## Overview
 
-The site presents the **power teams** of BNI Azpire and the **members** within
+The site presents the **power teams** of the chapter and the **members** within
 each team from a single codebase. Routing and data are structured so new power
 teams and members are added as data, not as bespoke code.
 
@@ -29,7 +30,7 @@ are built yet — see [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 ### Planned URL architecture
 
 ```
-/                  Home (BNI Azpire power teams)
+/                  Home (chapter power teams)
 /civil             Power team: Civil
 /manufacturing     Power team: Manufacturing
 /healthcare        Power team: Healthcare
@@ -153,7 +154,7 @@ Deployment is automated. **Every push to `main`** triggers
 
 ### One-time repository setup
 
-1. Push this repository to **`https://github.com/klyonix/bni-chapter-platform`**.
+1. Push this repository to your GitHub organization.
 2. In GitHub: **Settings → Pages → Build and deployment → Source = "GitHub Actions"**.
 3. Push to `main` (or run the workflow manually) to trigger the first deploy.
 
@@ -162,9 +163,9 @@ Deployment is automated. **Every push to `main`** triggers
 ```bash
 git init
 git add .
-git commit -m "chore: initialize BNI Chapter Platform scaffold"
+git commit -m "chore: initialize scaffold"
 git branch -M main
-git remote add origin https://github.com/klyonix/bni-chapter-platform.git
+git remote add origin <your-repo-url>
 git push -u origin main
 ```
 
@@ -173,38 +174,22 @@ git push -u origin main
 
 ---
 
-## Custom domain: `azpire.klyonix.in`
+## Custom domain
 
-The repo is domain-ready. `public/CNAME` already contains `azpire.klyonix.in`,
-so GitHub Pages will bind the domain on deploy.
+The repo is domain-ready via the `public/CNAME` file, which GitHub Pages reads
+on deploy to bind the custom domain.
 
-### GitHub side
+For privacy, the **actual domain, DNS records, and host values are not documented
+here** — they live in a separate private note kept outside this repository.
+General steps:
 
-1. **Settings → Pages → Custom domain** → confirm `azpire.klyonix.in` is set
-   (it should populate automatically from the `CNAME` file).
-2. Enable **Enforce HTTPS** once the certificate is provisioned (may take a few
-   minutes to an hour after DNS resolves).
-
-### GoDaddy DNS records
-
-`azpire` is a **subdomain**, so add a single **CNAME** record in GoDaddy
-(Domains → `klyonix.in` → DNS → Records):
-
-| Type  | Name (Host) | Value                    | TTL      |
-| ----- | ----------- | ------------------------ | -------- |
-| CNAME | `azpire`    | `klyonix.github.io`      | 1 hour   |
-
-Notes:
-
-- The CNAME **target is the GitHub Pages host** `klyonix.github.io` (the org's
-  Pages domain), **not** the repository — GitHub routes to the right repo using
-  the `CNAME` file in the deployment.
-- Do **not** add an A record for a subdomain; A records (`185.199.108.153`, etc.)
-  are only for apex/root domains.
-- After saving, verify with `dig azpire.klyonix.in +short` — it should resolve
-  through `klyonix.github.io`. DNS propagation can take up to a few hours.
-- Keep the `public/CNAME` file in the repo; deleting it will unset the custom
-  domain on the next deploy.
+1. **Settings → Pages → Custom domain** — confirm the domain (it populates from
+   the `CNAME` file).
+2. At your DNS provider, point the chosen host at your GitHub Pages address per
+   GitHub's custom-domain documentation.
+3. Enable **Enforce HTTPS** once the certificate is provisioned.
+4. Keep `public/CNAME` in the repo; deleting it unsets the custom domain on the
+   next deploy.
 
 ---
 

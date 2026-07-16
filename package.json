@@ -2,7 +2,7 @@
   "name": "bni-chapter-platform",
   "version": "0.1.0",
   "private": true,
-  "description": "Power team portfolio site for BNI Azpire, Greater Coimbatore. Built with Next.js. Hosted by KlyONIX.",
+  "description": "Power team portfolio for a BNI chapter. Built with Next.js. Hosted by KlyONIX.",
   "author": "KlyONIX Tech Consulting Pvt Ltd",
   "license": "MIT",
   "engines": {
