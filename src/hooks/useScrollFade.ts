@@ -38,3 +38,34 @@ export function useScrollFade(ref: RefObject<HTMLElement | null>): {
   // Hooks run unconditionally; the static choice happens at the end.
   return reduced ? { opacity: 1, y: 0 } : { opacity, y };
 }
+
+/**
+ * The hero artwork's scroll motion: sinks and fades, gone by the CTA.
+ *
+ * The mirror of useScrollFade — the text lifts away (y: 0 → -40) while the scene
+ * sinks (y: 0 → +60). Opposite directions read as depth; both moving the same
+ * way would just look like the page scrolling twice.
+ *
+ * It fades faster than the text, reaching zero at 70% of the hero's travel,
+ * which is roughly where the CTA sits. The artwork should be gone before the
+ * button becomes the thing you are looking at.
+ *
+ * transform and opacity only, and it fades content that is already visible, so
+ * there is nothing here a slow-JS visitor can get stuck behind.
+ */
+export function useScrollDrift(ref: RefObject<HTMLElement | null>): {
+  opacity: MotionValue<number> | number;
+  y: MotionValue<number> | number;
+} {
+  const reduced = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start start', 'end start'],
+  });
+
+  const opacity = useTransform(scrollYProgress, [0, 0.4, 0.7], [1, 0.45, 0]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, 60]);
+
+  return reduced ? { opacity: 1, y: 0 } : { opacity, y };
+}

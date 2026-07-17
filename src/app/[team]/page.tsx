@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Container } from '@/components/primitives/Container';
+import { DotLottie } from '@/components/ui/DotLottie';
 import { SiteCredit } from '@/components/shared/SiteCredit';
 import { TeamHero } from '@/components/team/TeamHero';
 import { MemberGrid } from '@/components/team/MemberGrid';
@@ -87,11 +88,14 @@ export default async function TeamPage({ params }: { params: Promise<Params> }) 
             <MemberGrid members={members} teamName={teamName} />
           </div>
 
-          {/* End of the page: the frame tops out. */}
+          {/* End of the page. */}
           <section className="mt-20 text-center">
-            <TopOutMark />
+            <DotLottie
+              src="/lottie/footer.lottie"
+              className="mx-auto aspect-[1024/928] w-[260px] sm:w-[300px]"
+            />
             <p className="mt-6 text-balance font-display text-display-m text-ink">
-              Building the future of {CHAPTER.town}, one project at a time.
+              Together We Build. Together We Grow.
             </p>
             <p className="mx-auto mt-4 max-w-[26rem] text-body text-ink-500">
               Every member here is vouched for by the rest of the chapter. That is the whole point
@@ -113,33 +117,5 @@ export default async function TeamPage({ params }: { params: Promise<Params> }) 
         </Container>
       </div>
     </main>
-  );
-}
-
-/**
- * The closing mark: a topping-out. The last beam is lifted into place and the
- * structure is complete — which is the note to end a page of builders on.
- * Draws itself when scrolled into view, once.
- */
-function TopOutMark() {
-  return (
-    <svg
-      viewBox="0 0 220 120"
-      aria-hidden="true"
-      className="topout text-ink-300 mx-auto h-24 w-auto"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path className="topout-line" d="M20 110h180" />
-      <path className="topout-line" d="M55 110V45h110v65" />
-      <path className="topout-line" d="M55 78h110M110 110V45" />
-      <path className="topout-beam" d="M40 30h140" />
-      <path className="topout-line" d="M110 30V12" />
-      {/* The flag that goes up when the frame tops out. */}
-      <path className="topout-flag" d="M110 12h26v14h-26z" />
-    </svg>
   );
 }

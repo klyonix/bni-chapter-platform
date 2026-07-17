@@ -1,17 +1,9 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-import { useEffect, useRef, useState } from 'react';
 import { animate, m, useInView, useReducedMotion } from 'framer-motion';
-import { useScrollFade } from '@/hooks/useScrollFade';
-
-/**
- * Lottie is loaded client-only (ssr:false): it touches the DOM, and keeping it
- * out of the server render also splits the lottie-web runtime out of the initial
- * bundle so it never blocks first paint. The animation JSON itself is fetched at
- * runtime from /public rather than imported, so its ~270 kB stays out of the JS.
- */
-const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
+import { useEffect, useRef, useState } from 'react';
+import { DotLottie } from '@/components/ui/DotLottie';
+import { useScrollFade, useScrollDrift } from '@/hooks/useScrollFade';
 
 type Stat = { value: number; label: string };
 
@@ -49,7 +41,7 @@ export function TeamHero({
   stats,
   ctaLabel,
   ctaHref,
-  lottieSrc = '/construction-site.json',
+  lottieSrc = '/lottie/hero.lottie',
 }: {
   eyebrow: string;
   heading: string;
@@ -60,22 +52,14 @@ export function TeamHero({
   lottieSrc?: string;
 }) {
   const reduce = useReducedMotion();
-  const [anim, setAnim] = useState<object | null>(null);
   const heroRef = useRef<HTMLElement>(null);
   const { opacity, y } = useScrollFade(heroRef);
+  // The scene sinks as you scroll and is gone by the CTA — a different motion
+  // from the text, which lifts away. Opposite directions read as depth.
+  const { opacity: artOpacity, y: artY } = useScrollDrift(heroRef);
 
-  useEffect(() => {
-    let alive = true;
-    fetch(lottieSrc)
-      .then((r) => r.json())
-      .then((d) => {
-        if (alive) setAnim(d);
-      })
-      .catch(() => {});
-    return () => {
-      alive = false;
-    };
-  }, [lottieSrc]);
+  // No fetch here any more: dotlottie-wc loads the .lottie itself, and the
+  // element registers via a dynamic import inside DotLottie.
 
   return (
     <section ref={heroRef} className="relative isolate overflow-hidden pb-6 pt-14 sm:pt-20">
@@ -117,17 +101,12 @@ export function TeamHero({
           </div>
         </m.div>
 
-        {/* Right column: the Lottie, fading in once its JSON has loaded. */}
+        {/* Right column: the construction scene. Sinks and fades on scroll. */}
         <m.div
-          initial={{ opacity: 0, scale: 0.98 }}
-          animate={{ opacity: anim ? 1 : 0, scale: anim ? 1 : 0.98 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="order-1 mx-auto w-full max-w-[560px] lg:order-2"
-          aria-hidden="true"
+          style={{ opacity: artOpacity, y: artY }}
+          className="order-1 mx-auto w-full max-w-[420px] lg:order-2"
         >
-          {anim && (
-            <Lottie animationData={anim} loop autoplay={!reduce} className="h-auto w-full" />
-          )}
+          <DotLottie src={lottieSrc} className="aspect-[1200/1080] w-full" />
         </m.div>
       </div>
     </section>
