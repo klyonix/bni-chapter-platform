@@ -15,7 +15,7 @@ export const TEAMS: PowerTeam[] = [
     name: 'Civil',
     // Written for a stranger who scanned a code on a water bottle and has no
     // idea what BNI or a "power team" is. No internal language, no claims.
-    tagline: 'Twelve professionals who design, build and finish spaces in and around Pollachi.',
+    tagline: 'Builders, suppliers and specialists who put up buildings in and around Pollachi.',
     status: 'live',
     seo: {
       title: 'Civil Power Team',

@@ -3,17 +3,14 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Container } from '@/components/primitives/Container';
 import { SiteCredit } from '@/components/shared/SiteCredit';
-import { MemberCard } from '@/components/team/MemberCard';
+import { ConstructionHero } from '@/components/team/ConstructionHero';
+import { MemberGrid } from '@/components/team/MemberGrid';
 import { CHAPTER } from '@/data/chapter';
 import { getLiveTeams, getMembersByTeam, getTeamBySlug } from '@/lib/members';
 import type { PowerTeamSlug } from '@/types';
 
 type Params = { team: string };
 
-/**
- * Only live teams get built. Adding /manufacturing means flipping its status in
- * src/data/teams.ts and registering its members — no route work.
- */
 export function generateStaticParams(): Params[] {
   return getLiveTeams().map((t) => ({ team: t.slug }));
 }
@@ -26,9 +23,8 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
     title: found.seo.title,
     description: found.seo.description,
     alternates: { canonical: `/${found.slug}/` },
-    // Next.js replaces the root `openGraph` object rather than merging into it,
-    // so siteName/images/type have to be restated or a shared link previews
-    // with no image. Silent, and only visible once someone pastes the URL.
+    // Next replaces the root openGraph rather than merging into it, so these
+    // have to be restated or a shared link previews with no image.
     openGraph: {
       type: 'website',
       siteName: CHAPTER.name,
@@ -41,7 +37,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
           url: '/images/og-default.png',
           width: 1200,
           height: 630,
-          alt: `${found.name} Power Team, ${CHAPTER.name}`,
+          alt: `${found.name} Power Team`,
         },
       ],
     },
@@ -50,15 +46,12 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
 
 /**
  * The QR landing page, and the real front door — over 90% of traffic starts
- * here, not on the home page. It has to introduce itself to a stranger without
- * pushing the members below the fold.
+ * here, not on the home page.
  *
- * No filter. Twelve members fit in a couple of thumb-flicks, and every control
- * that isn't there is one nobody has to understand. Removing it also made this
- * page a pure server component: /civil now ships no client JavaScript at all.
- *
- * Dark canvas, drafting grid, one accent per trade — the Civil section's own
- * identity, deliberately unlike the warm Pollachi home page.
+ * No filter: twelve members fit in a couple of thumb-flicks, and every control
+ * that isn't there is one nobody has to understand. No navigation either —
+ * cards expand in place. The member pages still exist, and Share still points
+ * at them, because a link to a card cannot preview a person.
  */
 export default async function TeamPage({ params }: { params: Promise<Params> }) {
   const { team } = await params;
@@ -70,52 +63,85 @@ export default async function TeamPage({ params }: { params: Promise<Params> }) 
   const teamName = `${found.name} Power Team`;
 
   return (
-    <main className="motif motif-grid min-h-screen bg-canvas pb-16">
-      <Container width="wide">
-        <header className="pb-8 pt-10">
-          <p className="rise text-micro uppercase text-on-dark-3">
-            {CHAPTER.name} · {CHAPTER.town}
-          </p>
-          <h1 className="rise rise-1 mt-3 font-display text-display-l text-on-dark">
-            {found.name} Power Team
-          </h1>
-          {/* The whole context for someone who arrived from a water bottle. */}
-          <p className="rise rise-2 mt-4 max-w-[34rem] text-body-l text-on-dark-2">
-            {found.tagline}
-          </p>
-          <p className="rise rise-3 mt-6 text-meta text-on-dark-3">
-            {members.length} members · tap anyone to see their profile
-          </p>
-        </header>
+    <main className="relative min-h-screen overflow-hidden bg-paper pb-24">
+      <ConstructionHero />
 
-        {/*
-          One column on a phone: at 375px a second column shrinks the portrait to
-          a thumbnail and the profession to 11px, and profession is the thing
-          people scan. Desktop has the room, so it uses it.
+      {/* Everything sits above the fixed scene. */}
+      <div className="relative z-10">
+        <Container width="wide">
+          {/* Tall enough to be a hero band: the construction scene is anchored to
+              the top of the viewport and needs room to be seen before the cards
+              start. Below this the cards cover it, and it fades out on scroll. */}
+          <header className="flex min-h-[52vh] flex-col justify-end pb-10 pt-14">
+            <p className="rise text-micro uppercase text-ink-400">
+              {CHAPTER.name} · {CHAPTER.town}
+            </p>
+            <h1 className="rise rise-1 mt-3 text-balance font-display text-display-l text-ink">
+              Our experts
+            </h1>
+            <p className="rise rise-2 mt-4 max-w-[34rem] text-body-l text-ink-700">
+              {found.tagline}
+            </p>
+            <p className="rise rise-3 mt-6 text-meta text-ink-400">
+              {members.length} members · tap a card to see contact details
+            </p>
+          </header>
 
-          `teamName` is "Civil Power Team", not "Civil" — that string lands
-          verbatim in the prefilled WhatsApp message a member receives.
-        */}
-        <ul className="deal grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {members.map((member) => (
-            <li key={member.slug} className="flex">
-              <MemberCard member={member} teamName={teamName} />
-            </li>
-          ))}
-        </ul>
+          <MemberGrid members={members} teamName={teamName} />
 
-        <footer className="mt-12 border-t border-panel-line pt-6">
-          <p className="text-meta text-on-dark-3">
-            Part of {CHAPTER.name}, {CHAPTER.town}.{' '}
-            <Link href="/" className="text-on-dark underline underline-offset-4">
-              About the chapter
-            </Link>
-          </p>
-          <div className="mt-3">
-            <SiteCredit onDark />
-          </div>
-        </footer>
-      </Container>
+          {/* End of the page: the frame tops out. */}
+          <section className="mt-20 text-center">
+            <TopOutMark />
+            <p className="mt-6 text-balance font-display text-display-m text-ink">
+              Building the future of {CHAPTER.town}, one project at a time.
+            </p>
+            <p className="mx-auto mt-4 max-w-[26rem] text-body text-ink-500">
+              Every member here is vouched for by the rest of the chapter. That is the whole point
+              of the room.
+            </p>
+          </section>
+
+          <footer className="mt-16 border-t border-hairline pt-6">
+            <p className="text-meta text-ink-500">
+              Part of {CHAPTER.name}, {CHAPTER.town}.{' '}
+              <Link href="/" className="text-ink underline underline-offset-4">
+                About the chapter
+              </Link>
+            </p>
+            <div className="mt-3">
+              <SiteCredit />
+            </div>
+          </footer>
+        </Container>
+      </div>
     </main>
+  );
+}
+
+/**
+ * The closing mark: a topping-out. The last beam is lifted into place and the
+ * structure is complete — which is the note to end a page of builders on.
+ * Draws itself when scrolled into view, once.
+ */
+function TopOutMark() {
+  return (
+    <svg
+      viewBox="0 0 220 120"
+      aria-hidden="true"
+      className="topout text-ink-300 mx-auto h-24 w-auto"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path className="topout-line" d="M20 110h180" />
+      <path className="topout-line" d="M55 110V45h110v65" />
+      <path className="topout-line" d="M55 78h110M110 110V45" />
+      <path className="topout-beam" d="M40 30h140" />
+      <path className="topout-line" d="M110 30V12" />
+      {/* The flag that goes up when the frame tops out. */}
+      <path className="topout-flag" d="M110 12h26v14h-26z" />
+    </svg>
   );
 }

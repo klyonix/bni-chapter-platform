@@ -44,15 +44,24 @@ export interface Member {
   photo?: string;
   /** Array from the start: a member in two teams later costs no migration. */
   powerTeams: PowerTeamSlug[];
-  /** ~240 chars. Three or four lines on a phone. */
-  description: string;
-  /** 3 to 6 items. A plain list, not chips. */
-  services: string[];
+  /**
+   * ~240 chars, in the member's own words.
+   *
+   * Optional only because it has not been collected yet — never invent one. A
+   * fabricated description of a real business is a claim the member never made,
+   * published under their name. Absent renders nothing.
+   */
+  description?: string;
+  /** 3 to 6 items. A plain list, not chips. Collect, do not guess. */
+  services?: string[];
   /**
    * ~200 chars. The point of the product: the only field that serves the
    * referral partner. Completes "Refer me when you hear...".
+   *
+   * TODO(content): none of the twelve have this yet, and it is the single
+   * highest-value thing still missing from the site.
    */
-  idealReferral: string;
+  idealReferral?: string;
   contact: MemberContact;
   social?: { linkedin?: string; instagram?: string; facebook?: string };
   /** Manual sort override. Members without one sort last. */

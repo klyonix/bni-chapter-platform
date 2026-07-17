@@ -6,8 +6,9 @@ import { ShareButton } from '@/components/member/ShareButton';
 import { Button } from '@/components/primitives/Button';
 import { Container } from '@/components/primitives/Container';
 import { SiteCredit } from '@/components/shared/SiteCredit';
+import { CategoryIcon } from '@/components/team/CategoryIcon';
 import { CHAPTER, emailSubject, whatsappIntro } from '@/data/chapter';
-import { professionAccent, professionLabel } from '@/data/professions';
+import { professionAccent, professionIcon, professionLabel } from '@/data/professions';
 import { mailtoLink, telLink, waLink } from '@/lib/links';
 import {
   getLiveTeams,
@@ -42,16 +43,17 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
 
   const { member, teamName } = data;
   const profession = professionLabel(member.profession);
-  const title = `${member.name}, ${profession}`;
-  const description = `${member.company}. ${member.idealReferral}`;
   const url = `/${team}/member/${slug}/`;
+  const description = member.idealReferral
+    ? `${member.company}. ${member.idealReferral}`
+    : `${member.company}. ${profession} in ${CHAPTER.town}, and a member of ${CHAPTER.name}.`;
 
   return {
-    title,
+    title: `${member.name}, ${profession}`,
     description,
     alternates: { canonical: url },
-    // Restated in full: Next replaces the root openGraph rather than merging,
-    // so omitting these drops the preview image from every shared profile.
+    // Next replaces the root openGraph rather than merging, so omitting these
+    // drops the preview image from every shared profile.
     openGraph: {
       type: 'profile',
       siteName: CHAPTER.name,
@@ -74,9 +76,14 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
 /**
  * A member profile.
  *
- * This is the shareable unit: most people who see it arrive from a link somebody
- * sent them, not from browsing. So it carries its own chapter framing and always
+ * This is the shareable unit. Cards expand in place on /civil, so nobody
+ * *browses* to this page — but Share and Refer point here, because a link to a
+ * card cannot preview a person. Most people who see this arrived from a link
+ * somebody sent them, which is why it carries its own chapter framing and always
  * offers a way up to the team.
+ *
+ * Description, services and the referral ask are all optional and render only
+ * when the member has actually written one. Nothing here is invented.
  */
 export default async function MemberPage({ params }: { params: Promise<Params> }) {
   const { team, slug } = await params;
@@ -85,12 +92,13 @@ export default async function MemberPage({ params }: { params: Promise<Params> }
 
   const { member, teamName } = data;
   const profession = professionLabel(member.profession);
+  const accent = professionAccent(member.profession);
   const wa = whatsappNumber(member);
   const profileUrl = `/${team}/member/${slug}/`;
 
-  // Anything that leaves this page — a WhatsApp referral, a saved contact — needs
-  // an absolute URL. A relative path is a dead string once it is out of the
-  // browser, and it looks perfectly fine in local testing.
+  // Anything that leaves this page — a WhatsApp referral, a saved contact —
+  // needs an absolute URL. A relative path is a dead string once it is out of
+  // the browser, and it looks perfectly fine in local testing.
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://azpire.klyonix.in';
   const absoluteProfileUrl = `${siteUrl}${profileUrl}`;
 
@@ -102,20 +110,17 @@ export default async function MemberPage({ params }: { params: Promise<Params> }
 
   // Reads correctly with the URL appended or without it.
   const referText = `${member.name}, ${profession} at ${member.company}. Part of the ${CHAPTER.name} ${teamName}.`;
-  const accent = professionAccent(member.profession);
 
   return (
-    // Same drafting grid as the team page: a profile reached from /civil should
-    // feel like the same room.
     <main
-      className="motif motif-grid min-h-screen bg-canvas pb-16"
+      className="min-h-screen bg-paper pb-16"
       style={{ '--member-accent': accent } as React.CSSProperties}
     >
       <Container>
         <div className="py-4">
           <Link
             href={`/${team}/`}
-            className="inline-flex h-tap items-center text-meta text-on-dark-3 hover:text-on-dark"
+            className="press inline-flex h-tap items-center text-meta text-ink-500 hover:text-ink"
           >
             ← {teamName}
           </Link>
@@ -129,38 +134,27 @@ export default async function MemberPage({ params }: { params: Promise<Params> }
               alt={member.name}
               width={96}
               height={96}
-              className="member-figure h-24 w-24 rounded object-cover"
+              className="h-24 w-24 rounded-2xl object-cover"
             />
           ) : (
             <div
               aria-hidden="true"
-              className="member-figure flex h-24 w-24 items-center justify-center rounded font-display text-[28px]"
-              style={{ color: accent }}
+              className="grid h-24 w-24 place-items-center rounded-full text-[26px] font-semibold text-white"
+              style={{ background: accent }}
             >
               {initials(member)}
             </div>
           )}
 
-          <h1 className="rise rise-1 mt-5 font-display text-display-m text-on-dark">
-            {member.name}
-          </h1>
-          <p className="rise rise-2 mt-1 text-body-l" style={{ color: accent }}>
+          <h1 className="rise rise-1 mt-5 font-display text-display-m text-ink">{member.name}</h1>
+          <p
+            className="rise rise-2 mt-2 flex items-center gap-2 text-micro uppercase"
+            style={{ color: accent }}
+          >
+            <CategoryIcon name={professionIcon(member.profession)} className="h-4 w-4" />
             {profession}
           </p>
-
-          <div className="mt-3 flex items-center gap-2">
-            {member.companyLogo && (
-              // eslint-disable-next-line @next/next/no-img-element -- static export, images unoptimized
-              <img
-                src={member.companyLogo}
-                alt=""
-                width={32}
-                height={32}
-                className="h-8 w-8 object-contain"
-              />
-            )}
-            <p className="text-body text-on-dark-2">{member.company}</p>
-          </div>
+          <p className="mt-2 text-body text-ink-700">{member.company}</p>
         </header>
 
         <div className="mt-6 flex gap-2">
@@ -177,7 +171,7 @@ export default async function MemberPage({ params }: { params: Promise<Params> }
           )}
           {member.contact.phone && (
             <Button
-              variant="onDark"
+              variant="secondary"
               size="lg"
               href={telLink(member.contact.phone)}
               aria-label={`Call ${member.name}`}
@@ -189,35 +183,43 @@ export default async function MemberPage({ params }: { params: Promise<Params> }
         </div>
 
         {/* The highest-value block on the site, and the reason this is not a
-            directory. Most member listings bury this field or omit it; it is the
-            only one that speaks to the person doing the referring. */}
-        <section className="rise rise-3 mt-10 border-l-2 pl-5" style={{ borderColor: accent }}>
-          <h2 className="text-micro uppercase text-on-dark-3">Refer me when you hear</h2>
-          <p className="mt-3 font-display text-quote italic text-on-dark">
-            &ldquo;{member.idealReferral}&rdquo;
-          </p>
-        </section>
+            directory. Every member listing buries this field or omits it; it is
+            the only one that speaks to the person doing the referring.
+            TODO(content): none of the twelve have written one, so it shows for
+            nobody today. Collecting these is the biggest job left. */}
+        {member.idealReferral && (
+          <section className="mt-10 border-l-2 pl-5" style={{ borderColor: accent }}>
+            <h2 className="text-micro uppercase text-ink-400">Refer me when you hear</h2>
+            <p className="mt-3 font-display text-quote italic text-ink">
+              &ldquo;{member.idealReferral}&rdquo;
+            </p>
+          </section>
+        )}
 
-        <section className="mt-10">
-          <h2 className="text-micro uppercase text-on-dark-3">About</h2>
-          <p className="mt-3 text-body text-on-dark-2">{member.description}</p>
-        </section>
+        {member.description && (
+          <section className="mt-10">
+            <h2 className="text-micro uppercase text-ink-400">About</h2>
+            <p className="mt-3 text-body text-ink-700">{member.description}</p>
+          </section>
+        )}
 
-        <section className="mt-8">
-          <h2 className="text-micro uppercase text-on-dark-3">Services</h2>
-          {/* A plain list, not chips. Chips imply filterability that does not
-              exist here, and a list that reads like a list is more scannable. */}
-          <ul className="mt-2">
-            {member.services.map((service) => (
-              <li
-                key={service}
-                className="border-b border-panel-line py-3 text-body text-on-dark-2 last:border-0"
-              >
-                {service}
-              </li>
-            ))}
-          </ul>
-        </section>
+        {member.services && member.services.length > 0 && (
+          <section className="mt-8">
+            <h2 className="text-micro uppercase text-ink-400">Services</h2>
+            {/* A plain list, not chips. Chips imply filterability that does not
+                exist here, and a list that reads like a list is more scannable. */}
+            <ul className="mt-2">
+              {member.services.map((service) => (
+                <li
+                  key={service}
+                  className="border-b border-hairline py-3 text-body text-ink-700 last:border-0"
+                >
+                  {service}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         <section className="mt-10 flex flex-col gap-2">
           <SaveContactButton vcard={vcard} filename={vCardFilename(member, CHAPTER.name)} />
@@ -226,7 +228,7 @@ export default async function MemberPage({ params }: { params: Promise<Params> }
               "I know someone" into a two-tap referral, which is the entire point
               of a BNI chapter expressed as one link. */}
           <Button
-            variant="onDark"
+            variant="secondary"
             size="lg"
             fullWidth
             href={waLink(undefined, `${referText}\n${absoluteProfileUrl}`)}
@@ -243,28 +245,17 @@ export default async function MemberPage({ params }: { params: Promise<Params> }
                   whatsappIntro(member.preferredName, teamName),
                 )}
                 aria-label={`Email ${member.name}`}
-                variant="onDark"
               >
                 Email
               </Button>
             )}
             {member.contact.website && (
-              <Button
-                variant="onDark"
-                href={member.contact.website}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <Button href={member.contact.website} target="_blank" rel="noopener noreferrer">
                 Website
               </Button>
             )}
             {member.contact.mapsUrl && (
-              <Button
-                variant="onDark"
-                href={member.contact.mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <Button href={member.contact.mapsUrl} target="_blank" rel="noopener noreferrer">
                 Directions
               </Button>
             )}
@@ -276,18 +267,18 @@ export default async function MemberPage({ params }: { params: Promise<Params> }
           </div>
         </section>
 
-        <footer className="mt-12 border-t border-panel-line pt-6">
-          <p className="text-meta text-on-dark-3">
+        <footer className="mt-12 border-t border-hairline pt-6">
+          <p className="text-meta text-ink-500">
             Member of {CHAPTER.name}, {CHAPTER.town}.
           </p>
           <Link
             href={`/${team}/`}
-            className="mt-2 inline-flex h-tap items-center text-meta text-on-dark underline underline-offset-4"
+            className="mt-2 inline-flex h-tap items-center text-meta text-ink underline underline-offset-4"
           >
             See the whole {teamName}
           </Link>
           <div className="mt-3">
-            <SiteCredit onDark />
+            <SiteCredit />
           </div>
         </footer>
       </Container>

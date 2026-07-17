@@ -1,40 +1,31 @@
 /**
- * Professions, declared once so members reference them instead of typing them
- * free-hand. Free text is how "Architect" and "Architecture" become two filter
- * chips for the same job.
+ * The trades in the Civil Power Team.
  *
- * ProfessionSlug is derived from this list, so a typo in a member's profession
- * is a typecheck error.
- */
-/**
- * Each profession carries its own accent.
+ * Each carries its own accent and glyph. The colour is tied to the trade, not
+ * the person, so it means something: on a page of twelve, the accent tells you
+ * what someone does before you read their title.
  *
- * The colour is tied to the trade, not to the person, so it means something: on
- * a page of twelve, the accent tells you what someone does before you read their
- * title, and two contractors read as the same kind of work. Assigning colours
- * per member instead would be decoration.
- *
- * Tuned for the dark card on /civil (#131E33). All twelve are measured AA as
- * text against it, 5.5:1 to 10:1 — re-measure if any of them change. Vivid but
- * not neon: these sit on deep navy, and fluorescent accents on dark read as a
- * gamer dashboard, not a chapter of professionals.
+ * `icon` names a shape drawn in CategoryIcon.tsx. Kept as a union rather than an
+ * emoji so the mark is line-work that matches the rest of the site — the brief
+ * rules out emoji-heavy interfaces.
  */
 export const PROFESSIONS = [
-  { slug: 'architect', label: 'Architect', accent: '#E8A33D' }, // amber, drafting pencil
-  { slug: 'structural-engineer', label: 'Structural Engineer', accent: '#5AA9FF' }, // steel blue
-  { slug: 'civil-contractor', label: 'Civil Contractor', accent: '#F2854A' }, // site orange
-  { slug: 'interior-designer', label: 'Interior Designer', accent: '#EF7B9B' }, // rose
-  { slug: 'electrical-contractor', label: 'Electrical Contractor', accent: '#F2C438' }, // live yellow
-  { slug: 'plumbing-contractor', label: 'Plumbing Contractor', accent: '#4FCFEC' }, // water cyan
-  { slug: 'painting-contractor', label: 'Painting Contractor', accent: '#B48BEF' }, // violet
-  { slug: 'modular-kitchen', label: 'Modular Kitchen', accent: '#48D8B4' }, // teal
-  { slug: 'flooring-tiles', label: 'Flooring & Tiles', accent: '#D2B183' }, // sand
-  { slug: 'aluminium-fabrication', label: 'Aluminium & Fabrication', accent: '#9CB0CC' }, // steel
-  { slug: 'landscaping', label: 'Landscaping', accent: '#6FDC8A' }, // green
-  { slug: 'property-legal', label: 'Property Legal', accent: '#F06A6A' }, // red
+  { slug: 'builder', label: 'Builder / Contractor', accent: '#F5A623', icon: 'building' },
+  { slug: 'tiles', label: 'Tiles', accent: '#F5A623', icon: 'grid' },
+  { slug: 'interior-decorator', label: 'Interior Decorator', accent: '#8B5CF6', icon: 'roller' },
+  { slug: 'hardware', label: 'Hardware', accent: '#7C3AED', icon: 'wrench' },
+  { slug: 'water-systems', label: 'Water Systems', accent: '#2F80ED', icon: 'drop' },
+  { slug: 'building-materials', label: 'Building Materials', accent: '#546376', icon: 'layers' },
+  { slug: 'windows-doors', label: 'Windows & Doors', accent: '#D6336C', icon: 'window' },
+  { slug: 'approvals', label: 'LPA / DTCP Approval', accent: '#0E9F6E', icon: 'stamp' },
+  { slug: 'false-ceiling', label: 'False Ceiling', accent: '#C2410C', icon: 'ceiling' },
+  { slug: 'painter', label: 'Painter', accent: '#0891B2', icon: 'brush' },
+  { slug: 'cement-concrete', label: 'Cement / Concrete', accent: '#B45309', icon: 'mixer' },
+  { slug: 'land-promoter', label: 'Land Promoter', accent: '#DC2626', icon: 'plot' },
 ] as const;
 
 export type ProfessionSlug = (typeof PROFESSIONS)[number]['slug'];
+export type CategoryIconName = (typeof PROFESSIONS)[number]['icon'];
 
 export function professionLabel(slug: ProfessionSlug): string {
   return PROFESSIONS.find((p) => p.slug === slug)?.label ?? slug;
@@ -42,5 +33,9 @@ export function professionLabel(slug: ProfessionSlug): string {
 
 /** The trade's accent. Fed to CSS as a custom property, never as a Tailwind class. */
 export function professionAccent(slug: ProfessionSlug): string {
-  return PROFESSIONS.find((p) => p.slug === slug)?.accent ?? '#9CB0CC';
+  return PROFESSIONS.find((p) => p.slug === slug)?.accent ?? '#546376';
+}
+
+export function professionIcon(slug: ProfessionSlug): CategoryIconName {
+  return PROFESSIONS.find((p) => p.slug === slug)?.icon ?? 'building';
 }
