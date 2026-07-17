@@ -579,7 +579,10 @@ body {
 .card-action {
   display: grid;
   place-items: center;
-  height: 2.75rem; /* 44px — the tap target floor */
+  /* 48px is the floor: Android's minimum and WCAG 2.5.5, not iOS's 44.
+     min-height, not height — as a flex item with flex:1 a fixed height still
+     rendered 46px, and min-height cannot be shrunk away. */
+  min-height: 3rem;
   flex: 1 1 0;
   border-radius: 12px;
   border: 1px solid rgb(var(--hairline));

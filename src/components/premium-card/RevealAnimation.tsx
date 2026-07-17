@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import type { ReactNode } from 'react';
 import { useReveal } from '@/hooks/useReveal';
 
@@ -26,8 +26,8 @@ export function RevealAnimation({
 }) {
   const reveal = useReveal(index);
   return (
-    <motion.div {...reveal} className={className}>
+    <m.div {...reveal} className={className}>
       {children}
-    </motion.div>
+    </m.div>
   );
 }

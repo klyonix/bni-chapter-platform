@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { m, useReducedMotion } from 'framer-motion';
 import { iconIdle } from '@/components/premium-card/cardVariants';
 import type { IconMotion } from '@/components/premium-card/categoryThemes';
 import { CategoryIcon } from '@/components/team/CategoryIcon';
@@ -34,8 +34,8 @@ export function AnimatedIcon({
   if (reduced) return <CategoryIcon name={name} className={className} />;
 
   return (
-    <motion.span className="inline-flex" animate={iconIdle[kind]}>
+    <m.span className="inline-flex" animate={iconIdle[kind]}>
       <CategoryIcon name={name} className={className} />
-    </motion.span>
+    </m.span>
   );
 }

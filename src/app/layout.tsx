@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter_Tight, Newsreader } from 'next/font/google';
+import { MotionProvider } from '@/components/shared/MotionProvider';
 import '@/styles/globals.css';
 
 /**
@@ -113,7 +114,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           />
         </noscript>
       </head>
-      <body>{children}</body>
+      <body>
+        <MotionProvider>{children}</MotionProvider>
+      </body>
     </html>
   );
 }

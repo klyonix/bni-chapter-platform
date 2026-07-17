@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from 'react';
-import { animate, motion, useInView, useReducedMotion } from 'framer-motion';
+import { animate, m, useInView, useReducedMotion } from 'framer-motion';
 import { useScrollFade } from '@/hooks/useScrollFade';
 
 /**
@@ -83,7 +83,7 @@ export function TeamHero({
 
       <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-8">
         {/* Left column: heading, description, counters, CTA. */}
-        <motion.div style={{ opacity, y }} className="order-2 lg:order-1">
+        <m.div style={{ opacity, y }} className="order-2 lg:order-1">
           <p className="rise text-micro uppercase tracking-wide text-ink-400">{eyebrow}</p>
           <h1 className="rise rise-1 mt-3 text-balance font-display text-display-l text-ink">
             {heading}
@@ -101,7 +101,7 @@ export function TeamHero({
           <div className="rise rise-3 mt-9">
             <a
               href={ctaHref}
-              className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-label font-semibold text-paper shadow-sm transition-transform duration-150 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+              className="inline-flex min-h-tap items-center gap-2 rounded-full bg-ink px-6 py-3 text-label font-semibold text-paper shadow-sm transition-transform duration-150 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
             >
               {ctaLabel}
               <svg
@@ -115,10 +115,10 @@ export function TeamHero({
               </svg>
             </a>
           </div>
-        </motion.div>
+        </m.div>
 
         {/* Right column: the Lottie, fading in once its JSON has loaded. */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: anim ? 1 : 0, scale: anim ? 1 : 0.98 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
@@ -128,7 +128,7 @@ export function TeamHero({
           {anim && (
             <Lottie animationData={anim} loop autoplay={!reduce} className="h-auto w-full" />
           )}
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );
@@ -183,7 +183,7 @@ function FloatingCircles({ reduce }: { reduce: boolean }) {
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
       {circles.map((c, i) => (
-        <motion.span
+        <m.span
           key={i}
           className="absolute rounded-full blur-2xl"
           style={{
