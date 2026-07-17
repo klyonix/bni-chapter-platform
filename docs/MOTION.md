@@ -1,78 +1,92 @@
-# Motion: what happened, and why animation is CSS
+# Motion: how animation works here, and one expensive wrong turn
 
-Short version: **Motion (motion.dev) was tried, failed, and has been removed.**
-Animation on this site is CSS. This is a deliberate decision after the JS route
-was tried, measured and found broken. Read this before reaching for it again.
+Animation is split deliberately:
 
-## What was tried
+- **CSS** for anything above the fold, and for press feedback.
+- **Framer Motion**, behind `LazyMotion` + `m`, for scroll-linked and
+  scroll-triggered motion — the things CSS cannot do well.
 
-LazyMotion with `m` components, exactly as documented:
+Read the rule in §2 before adding either.
 
-```tsx
-<LazyMotion features={loadFeatures} strict>
-  {' '}
-  // and features={domMax}
-  <MotionConfig reducedMotion="user">…</MotionConfig>
-</LazyMotion>
-```
+## 1. The wrong turn, recorded so nobody repeats it
 
-Versions: `motion@12.42.2`, Next 15.3.3, React 19.1.0, static export.
+This file previously stated that **LazyMotion was broken in this stack** and that
+Framer had been removed because of it. **That was wrong**, and the retraction
+matters more than the original claim.
 
-## What went wrong
+The evidence looked damning: animations frozen mid-flight, `opacity` stuck at
+`0.746814` forever; an inline `max-height: 40rem` computing to `0px`; a
+`grid-template-rows: 1fr` resolving to `0px`. Three different techniques, all
+apparently dead.
 
-**Under LazyMotion, Motion's animation loop does not run in this stack.** Static
-values are applied and then never animated away. Three distinct symptoms, all
-reproduced against a **production build** served statically (not a dev-server
-artefact):
+The actual cause was a **backgrounded browser tab**. Browsers pause
+`requestAnimationFrame` when `document.hidden` is true, so nothing driven by a
+MotionValue — or by any CSS transition — advances. Every reading was of a paused
+frame.
 
-| Setup                             | Symptom                                                                                                                                                |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `AnimatePresence` + `m.li`        | Exiting children never finish their exit, so they never unmount. Ten cards stayed in the DOM and **the profession filter silently stopped filtering**. |
-| `m.li` with `initial` / `animate` | `initial` applied (it is just a style), `animate` never ran. Newly filtered-in cards were **stranded at `opacity: 0`** — permanently invisible.        |
-| `m.li` with `layout` only         | Layout projection applied `translate3d(0, 1958px, 0)` and never animated back. Cards **displaced off-screen**.                                         |
+The same false signal later "broke" the expandable member card, which was also
+fine the whole time. Both cost hours.
 
-Async (`features={() => import(…)}`) and synchronous (`features={domMax}`) both
-failed. The lazily-imported chunk was confirmed to load. Removing LazyMotion and
-using full `motion` **did** work — verified by sampling frames mid-transition
-(`translateY` 8 → 7.46 → 6.93 → 5.54 → 2.83 → 1.51 → none).
+> **The rule: verify animation with a screenshot, never by reading computed style
+> from a headless tab.** A screenshot forces the tab visible; `getComputedStyle`
+> does not. If something looks frozen, check `document.hidden` first.
 
-So the choice was: full `motion`, or no Motion.
+LazyMotion is now in use and demonstrably works — verified by screenshot, with
+the stat counters caught mid-count and settling at their real value.
 
-## Why CSS won
+## 2. The rule that is real: never hide content above the fold
 
-Full `motion` costs **+26 kB** on `/civil` (149 kB vs 123 kB) — the QR landing
-page, the one screen where a visitor is standing at an event on 4G. Everything it
-was buying us is available in CSS for **zero bytes**:
+Framer renders `initial` into the **server HTML**. So `initial="hidden"` ships
+`style="opacity:0"` in the markup, and a visitor whose JS is blocked — or merely
+slow, on 4G, having scanned a QR code on a water bottle — sees **nothing**.
 
-- **Arrival** — `.rise` keyframes with a stagger (`globals.css`).
-- **Press feedback** — `.press:active { transform: scale(.975) }`.
-- **Filter** — the work is a synchronous array filter over data already in the
-  HTML. There is nothing to animate _through_; the chip state and the instant
-  result are the honest feedback.
+This was live on `/civil`, the QR landing page: the eyebrow, the `h1`, the
+description and the CTA all shipped invisible. The stat counters were worse —
+they shipped `0`, so the page claimed the chapter had **0 members**. Not a
+missing number, a wrong one.
 
-CSS also fixes a problem Motion introduced. Motion renders `initial={{opacity:0}}`
-into the **server HTML**, so a visitor whose JS is slow or blocked sees a blank
-page. CSS animation needs no JS. The shipped HTML contains **zero** `opacity:0`
-styles — the site is fully readable with JavaScript disabled.
+So:
 
-And `prefers-reduced-motion` is handled once, in `globals.css`, for everything.
-Motion needed a separate `reducedMotion="user"` because JS animation sails past
-CSS media queries entirely.
+| Where              | What to use                                                                                           |
+| ------------------ | ----------------------------------------------------------------------------------------------------- |
+| Above the fold     | CSS `.rise` / `.rise-1..3` (globals.css). No JS, no bytes, reduced-motion already handled.            |
+| Below the fold     | `RevealAnimation` / `useReveal`.                                                                      |
+| Scroll-linked fade | `useScrollFade` — it only ever fades **already-visible** content, so nothing can get stuck behind it. |
+| Press feedback     | CSS `:active`. Instant, free, cannot strand an element.                                               |
 
-## If you want to revisit
+`<noscript>` guards in `app/layout.tsx` cover JS-off for `[data-reveal]` and
+`[data-counter]`. They do **not** cover slow-JS — which is exactly why the table
+above exists rather than relying on the guard.
 
-`motion` has been removed from `package.json`. The site's runtime dependencies are
-now just `next`, `react` and `react-dom`. Before adding it back:
+## 3. Bundle
 
-1. Reproduce the three failures above on the current version — they may be fixed.
-2. Test against `next build` plus a static server, **never** the dev server. HMR
-   both masked real failures and invented fake ones while this was being debugged,
-   and cost hours. A production build found the true cause in minutes.
-3. Check the shipped HTML for `opacity:0` before shipping. Motion writes `initial`
-   into the server HTML; anything hidden there is invisible without JS.
-4. Re-measure `/civil` First Load JS. Budget is ~115 kB against a 101 kB Next +
-   React floor. It is currently 107 kB.
+`LazyMotion features={domAnimation}` (~15kb), not `domMax` (~25kb): nothing uses
+`layout` or drag. **If you add a `layout` animation this must change** — check
+first.
 
-Bring it back only for something CSS genuinely cannot do — shared-element
-transitions, drag, gesture-driven physics. Fades, slides, staggers and press
-states are not that.
+`strict` is on. It throws if a full `motion` component renders anywhere inside,
+because one `motion.div` silently pulls the whole bundle back and undoes the
+split. Use `m` from `framer-motion`.
+
+Measured effect of the switch:
+
+| Route                  | Full `motion` | `LazyMotion` + `m` |
+| ---------------------- | ------------- | ------------------ |
+| `/civil`               | 165 kB        | **150 kB**         |
+| `/civil/member/[slug]` | 149 kB        | **122 kB**         |
+
+Framer's docs also suggest loading features asynchronously to split further.
+That was tried and appeared to fail — but it was tested under the frozen-tab
+conditions above, so **that result is not trustworthy either**. Worth revisiting
+with a visible tab and a real measurement.
+
+## 4. Performance rules
+
+- Animate **`transform` and `opacity` only**. No width/height/top/left, no
+  filter, and never a continuously-animated `box-shadow` — swap between the
+  shadow tokens on state change instead.
+- The border beam is a rotating conic layer, not an animated `border-color`, for
+  exactly this reason.
+- Nothing carries a permanent `will-change`.
+- Every loop, reveal and idle is behind `useReducedMotion()`, plus the global
+  `prefers-reduced-motion` block in globals.css.

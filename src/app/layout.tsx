@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter_Tight, Newsreader } from 'next/font/google';
+import { MotionProvider } from '@/components/shared/MotionProvider';
 import '@/styles/globals.css';
 
 /**
@@ -86,7 +87,36 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en-IN" className={`${newsreader.variable} ${interTight.variable}`}>
-      <body>{children}</body>
+      <head>
+        {/*
+          The no-JS guard for scroll reveals.
+
+          Framer renders `initial` into the server HTML, so a revealing element
+          ships as style="opacity:0". With JS blocked it would stay invisible
+          forever — the page would simply look empty. `!important` in a stylesheet
+          beats an inline style, and <noscript> only applies when JS is off, so
+          this costs nothing in the normal case.
+
+          This covers JS-off. It does not cover slow-JS, which is why reveals are
+          never used above the fold — see hooks/useReveal.ts.
+        */}
+        <noscript>
+          {/* eslint-disable-next-line react/no-danger */}
+          <style
+            dangerouslySetInnerHTML={{
+              __html:
+                '[data-reveal]{opacity:1!important;transform:none!important}' +
+                // The stat counters render 0 and count up. Without JS that is a
+                // wrong number, not a missing one, so hide the animated span and
+                // let the <noscript> beside it show the real value.
+                '[data-counter]{display:none}',
+            }}
+          />
+        </noscript>
+      </head>
+      <body>
+        <MotionProvider>{children}</MotionProvider>
+      </body>
     </html>
   );
 }

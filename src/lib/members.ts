@@ -1,3 +1,4 @@
+import { themeFor } from '@/components/premium-card/categoryThemes';
 import { civilMembers } from '@/data/members/civil';
 import { PROFESSIONS, type ProfessionSlug } from '@/data/professions';
 import { TEAMS } from '@/data/teams';
@@ -80,4 +81,26 @@ export function initials(member: Member): string {
   if (parts.length === 0) return '?';
   if (parts.length === 1) return parts[0].slice(0, 1).toUpperCase();
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+/**
+ * Other members worth showing on a profile.
+ *
+ * Nearest first: same trade, then the same theme family (a tiler and a hardware
+ * merchant are both "structural / materials" and a visitor looking at one may
+ * well want the other), then anyone else on the team to fill the row.
+ *
+ * The family step is why this lives here rather than being a one-line filter at
+ * the call site — "related" means something specific, and it should mean the
+ * same thing everywhere.
+ */
+export function getRelatedMembers(member: Member, limit = 3): Member[] {
+  const team = member.powerTeams[0];
+  const pool = getMembersByTeam(team).filter((m) => m.slug !== member.slug);
+  const family = themeFor(member.profession).family;
+
+  const rank = (m: Member) =>
+    m.profession === member.profession ? 0 : themeFor(m.profession).family === family ? 1 : 2;
+
+  return [...pool].sort((a, b) => rank(a) - rank(b)).slice(0, limit);
 }

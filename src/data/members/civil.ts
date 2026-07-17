@@ -113,7 +113,7 @@ export const civilMembers: Member[] = [
   {
     slug: 'desingu-raja-p',
     name: 'Desingu Raja P.',
-    // CONFIRM: "Desingu Raja" or "Desingu"?
+    // Full name, confirmed with the chapter. Not shortened to "Desingu".
     preferredName: 'Desingu Raja',
     profession: 'painter',
     company: 'Dev Pro Painting',
@@ -132,7 +132,7 @@ export const civilMembers: Member[] = [
   {
     slug: 'senthil-kumar-g',
     name: 'Senthil Kumar G.',
-    // CONFIRM: "Senthil Kumar" or "Senthil"?
+    // Full name, confirmed with the chapter. Not shortened to "Senthil".
     preferredName: 'Senthil Kumar',
     profession: 'land-promoter',
     company: 'Terrain Realty',
