@@ -1,4 +1,4 @@
-import type { Variants } from 'framer-motion';
+import type { TargetAndTransition, Variants } from 'framer-motion';
 
 /**
  * Shared motion variants. Nothing re-declares these locally.
@@ -44,7 +44,9 @@ export function revealDelay(index: number): number {
  * Idle motion for the trade glyph. Slow and tiny — you should feel it only if
  * you look. Transform-only.
  */
-export const iconIdle = {
+// Not `as const`: that makes the keyframe arrays readonly, which Framer's
+// TargetAndTransition does not accept.
+export const iconIdle: Record<string, TargetAndTransition> = {
   float: {
     y: [0, -4, 0],
     transition: { duration: 7, repeat: Infinity, ease: 'easeInOut' },
@@ -57,4 +59,4 @@ export const iconIdle = {
     rotate: [0, 4, 0, -4, 0],
     transition: { duration: 8, repeat: Infinity, ease: 'easeInOut' },
   },
-} as const;
+};

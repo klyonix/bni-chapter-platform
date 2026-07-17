@@ -40,7 +40,7 @@ export function MemberGrid({ members, teamName }: { members: Member[]; teamName:
   }, [members]);
 
   return (
-    <ul className="deal grid grid-cols-1 items-start gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <ul className="grid grid-cols-1 items-start gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {members.map((member, i) => (
         <li
           key={member.slug}
@@ -49,6 +49,7 @@ export function MemberGrid({ members, teamName }: { members: Member[]; teamName:
           style={order ? { order: order[i] } : undefined}
         >
           <MemberCard
+            index={i}
             member={member}
             teamName={teamName}
             open={openSlug === member.slug}
