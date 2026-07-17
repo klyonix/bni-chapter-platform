@@ -677,3 +677,26 @@ body {
   -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 45%, transparent 100%);
   mask-image: linear-gradient(to bottom, #000 0%, #000 45%, transparent 100%);
 }
+
+/**
+ * The trade's pattern behind a profile hero.
+ *
+ * Fixed to the top of the page and faded out well before the content ends, so
+ * it is atmosphere behind the identity rather than a texture under the whole
+ * page. Same pattern the member's card uses, so arriving here from a card feels
+ * like the same room.
+ */
+.profile-wash {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 0;
+  height: 32rem;
+  pointer-events: none;
+  /* The card uses 0.035 for the same pattern. This was 0.5 — fourteen times
+     heavier — and the lattice fought the name for attention. Atmosphere, not
+     wallpaper. */
+  background-image: var(--card-gradient), var(--card-pattern);
+  opacity: 0.06;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 88%);
+  mask-image: linear-gradient(to bottom, #000 0%, transparent 88%);
+}
