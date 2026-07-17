@@ -42,7 +42,7 @@ export function ShareButton({ title, text, url }: { title: string; text: string;
   }
 
   return (
-    <Button variant="secondary" onClick={share} aria-label={`Share ${title}`}>
+    <Button variant="onDark" onClick={share} aria-label={`Share ${title}`}>
       {copied ? 'Link copied' : 'Share'}
     </Button>
   );

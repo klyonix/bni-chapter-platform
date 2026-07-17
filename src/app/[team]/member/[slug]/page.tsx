@@ -7,7 +7,7 @@ import { Button } from '@/components/primitives/Button';
 import { Container } from '@/components/primitives/Container';
 import { SiteCredit } from '@/components/shared/SiteCredit';
 import { CHAPTER, emailSubject, whatsappIntro } from '@/data/chapter';
-import { professionLabel } from '@/data/professions';
+import { professionAccent, professionLabel } from '@/data/professions';
 import { mailtoLink, telLink, waLink } from '@/lib/links';
 import {
   getLiveTeams,
@@ -102,16 +102,20 @@ export default async function MemberPage({ params }: { params: Promise<Params> }
 
   // Reads correctly with the URL appended or without it.
   const referText = `${member.name}, ${profession} at ${member.company}. Part of the ${CHAPTER.name} ${teamName}.`;
+  const accent = professionAccent(member.profession);
 
   return (
     // Same drafting grid as the team page: a profile reached from /civil should
     // feel like the same room.
-    <main className="motif motif-grid min-h-screen pb-16">
+    <main
+      className="motif motif-grid min-h-screen bg-canvas pb-16"
+      style={{ '--member-accent': accent } as React.CSSProperties}
+    >
       <Container>
         <div className="py-4">
           <Link
             href={`/${team}/`}
-            className="inline-flex h-tap items-center text-meta text-ink-500 hover:text-ink"
+            className="inline-flex h-tap items-center text-meta text-on-dark-3 hover:text-on-dark"
           >
             ← {teamName}
           </Link>
@@ -125,19 +129,24 @@ export default async function MemberPage({ params }: { params: Promise<Params> }
               alt={member.name}
               width={96}
               height={96}
-              className="h-24 w-24 rounded object-cover"
+              className="member-figure h-24 w-24 rounded object-cover"
             />
           ) : (
             <div
               aria-hidden="true"
-              className="flex h-24 w-24 items-center justify-center rounded border border-hairline bg-surface font-display text-[28px] text-ink-400"
+              className="member-figure flex h-24 w-24 items-center justify-center rounded font-display text-[28px]"
+              style={{ color: accent }}
             >
               {initials(member)}
             </div>
           )}
 
-          <h1 className="rise rise-1 mt-5 font-display text-display-m text-ink">{member.name}</h1>
-          <p className="rise rise-2 mt-1 text-body-l text-accent-ink">{profession}</p>
+          <h1 className="rise rise-1 mt-5 font-display text-display-m text-on-dark">
+            {member.name}
+          </h1>
+          <p className="rise rise-2 mt-1 text-body-l" style={{ color: accent }}>
+            {profession}
+          </p>
 
           <div className="mt-3 flex items-center gap-2">
             {member.companyLogo && (
@@ -150,14 +159,14 @@ export default async function MemberPage({ params }: { params: Promise<Params> }
                 className="h-8 w-8 object-contain"
               />
             )}
-            <p className="text-body text-ink-700">{member.company}</p>
+            <p className="text-body text-on-dark-2">{member.company}</p>
           </div>
         </header>
 
         <div className="mt-6 flex gap-2">
           {wa && (
             <Button
-              variant="primary"
+              variant="whatsapp"
               size="lg"
               href={waLink(wa, whatsappIntro(member.preferredName, teamName))}
               aria-label={`WhatsApp ${member.name}`}
@@ -168,7 +177,7 @@ export default async function MemberPage({ params }: { params: Promise<Params> }
           )}
           {member.contact.phone && (
             <Button
-              variant="secondary"
+              variant="onDark"
               size="lg"
               href={telLink(member.contact.phone)}
               aria-label={`Call ${member.name}`}
@@ -182,27 +191,27 @@ export default async function MemberPage({ params }: { params: Promise<Params> }
         {/* The highest-value block on the site, and the reason this is not a
             directory. Most member listings bury this field or omit it; it is the
             only one that speaks to the person doing the referring. */}
-        <section className="rise rise-3 mt-10 border-l-2 border-accent pl-5">
-          <h2 className="text-micro uppercase text-ink-400">Refer me when you hear</h2>
-          <p className="mt-3 font-display text-quote italic text-ink">
+        <section className="rise rise-3 mt-10 border-l-2 pl-5" style={{ borderColor: accent }}>
+          <h2 className="text-micro uppercase text-on-dark-3">Refer me when you hear</h2>
+          <p className="mt-3 font-display text-quote italic text-on-dark">
             &ldquo;{member.idealReferral}&rdquo;
           </p>
         </section>
 
         <section className="mt-10">
-          <h2 className="text-micro uppercase text-ink-400">About</h2>
-          <p className="mt-3 text-body text-ink-700">{member.description}</p>
+          <h2 className="text-micro uppercase text-on-dark-3">About</h2>
+          <p className="mt-3 text-body text-on-dark-2">{member.description}</p>
         </section>
 
         <section className="mt-8">
-          <h2 className="text-micro uppercase text-ink-400">Services</h2>
+          <h2 className="text-micro uppercase text-on-dark-3">Services</h2>
           {/* A plain list, not chips. Chips imply filterability that does not
               exist here, and a list that reads like a list is more scannable. */}
           <ul className="mt-2">
             {member.services.map((service) => (
               <li
                 key={service}
-                className="border-b border-hairline py-3 text-body text-ink-700 last:border-0"
+                className="border-b border-panel-line py-3 text-body text-on-dark-2 last:border-0"
               >
                 {service}
               </li>
@@ -217,7 +226,7 @@ export default async function MemberPage({ params }: { params: Promise<Params> }
               "I know someone" into a two-tap referral, which is the entire point
               of a BNI chapter expressed as one link. */}
           <Button
-            variant="secondary"
+            variant="onDark"
             size="lg"
             fullWidth
             href={waLink(undefined, `${referText}\n${absoluteProfileUrl}`)}
@@ -234,17 +243,28 @@ export default async function MemberPage({ params }: { params: Promise<Params> }
                   whatsappIntro(member.preferredName, teamName),
                 )}
                 aria-label={`Email ${member.name}`}
+                variant="onDark"
               >
                 Email
               </Button>
             )}
             {member.contact.website && (
-              <Button href={member.contact.website} target="_blank" rel="noopener noreferrer">
+              <Button
+                variant="onDark"
+                href={member.contact.website}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Website
               </Button>
             )}
             {member.contact.mapsUrl && (
-              <Button href={member.contact.mapsUrl} target="_blank" rel="noopener noreferrer">
+              <Button
+                variant="onDark"
+                href={member.contact.mapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Directions
               </Button>
             )}
@@ -256,18 +276,18 @@ export default async function MemberPage({ params }: { params: Promise<Params> }
           </div>
         </section>
 
-        <footer className="mt-12 border-t border-hairline pt-6">
-          <p className="text-meta text-ink-500">
+        <footer className="mt-12 border-t border-panel-line pt-6">
+          <p className="text-meta text-on-dark-3">
             Member of {CHAPTER.name}, {CHAPTER.town}.
           </p>
           <Link
             href={`/${team}/`}
-            className="mt-2 inline-flex h-tap items-center text-meta text-ink underline underline-offset-4"
+            className="mt-2 inline-flex h-tap items-center text-meta text-on-dark underline underline-offset-4"
           >
             See the whole {teamName}
           </Link>
           <div className="mt-3">
-            <SiteCredit />
+            <SiteCredit onDark />
           </div>
         </footer>
       </Container>

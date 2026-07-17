@@ -3,14 +3,9 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Container } from '@/components/primitives/Container';
 import { SiteCredit } from '@/components/shared/SiteCredit';
-import { TeamBrowser } from '@/components/team/TeamBrowser';
+import { MemberCard } from '@/components/team/MemberCard';
 import { CHAPTER } from '@/data/chapter';
-import {
-  getLiveTeams,
-  getMembersByTeam,
-  getProfessionsForTeam,
-  getTeamBySlug,
-} from '@/lib/members';
+import { getLiveTeams, getMembersByTeam, getTeamBySlug } from '@/lib/members';
 import type { PowerTeamSlug } from '@/types';
 
 type Params = { team: string };
@@ -57,6 +52,13 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
  * The QR landing page, and the real front door — over 90% of traffic starts
  * here, not on the home page. It has to introduce itself to a stranger without
  * pushing the members below the fold.
+ *
+ * No filter. Twelve members fit in a couple of thumb-flicks, and every control
+ * that isn't there is one nobody has to understand. Removing it also made this
+ * page a pure server component: /civil now ships no client JavaScript at all.
+ *
+ * Dark canvas, drafting grid, one accent per trade — the Civil section's own
+ * identity, deliberately unlike the warm Pollachi home page.
  */
 export default async function TeamPage({ params }: { params: Promise<Params> }) {
   const { team } = await params;
@@ -65,41 +67,52 @@ export default async function TeamPage({ params }: { params: Promise<Params> }) 
 
   const slug = found.slug as PowerTeamSlug;
   const members = getMembersByTeam(slug);
-  const professions = getProfessionsForTeam(slug);
+  const teamName = `${found.name} Power Team`;
 
   return (
-    <main className="motif motif-grid min-h-screen pb-16">
-      <Container>
-        <header className="pb-6 pt-10">
-          <p className="rise text-micro uppercase text-ink-400">
+    <main className="motif motif-grid min-h-screen bg-canvas pb-16">
+      <Container width="wide">
+        <header className="pb-8 pt-10">
+          <p className="rise text-micro uppercase text-on-dark-3">
             {CHAPTER.name} · {CHAPTER.town}
           </p>
-          <h1 className="rise rise-1 mt-3 font-display text-display-l text-ink">
-            {found.name}
-            <br />
-            Power Team
+          <h1 className="rise rise-1 mt-3 font-display text-display-l text-on-dark">
+            {found.name} Power Team
           </h1>
           {/* The whole context for someone who arrived from a water bottle. */}
-          <p className="rise rise-2 mt-4 max-w-[28rem] text-body-l text-ink-700">{found.tagline}</p>
+          <p className="rise rise-2 mt-4 max-w-[34rem] text-body-l text-on-dark-2">
+            {found.tagline}
+          </p>
+          <p className="rise rise-3 mt-6 text-meta text-on-dark-3">
+            {members.length} members · tap anyone to see their profile
+          </p>
         </header>
 
-        {/* "Civil Power Team", not "Civil" — this string lands verbatim in the
-            prefilled WhatsApp message a member receives. */}
-        <TeamBrowser
-          members={members}
-          professions={professions}
-          teamName={`${found.name} Power Team`}
-        />
+        {/*
+          One column on a phone: at 375px a second column shrinks the portrait to
+          a thumbnail and the profession to 11px, and profession is the thing
+          people scan. Desktop has the room, so it uses it.
 
-        <footer className="mt-12 border-t border-hairline pt-6">
-          <p className="text-meta text-ink-500">
+          `teamName` is "Civil Power Team", not "Civil" — that string lands
+          verbatim in the prefilled WhatsApp message a member receives.
+        */}
+        <ul className="deal grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {members.map((member) => (
+            <li key={member.slug} className="flex">
+              <MemberCard member={member} teamName={teamName} />
+            </li>
+          ))}
+        </ul>
+
+        <footer className="mt-12 border-t border-panel-line pt-6">
+          <p className="text-meta text-on-dark-3">
             Part of {CHAPTER.name}, {CHAPTER.town}.{' '}
-            <Link href="/" className="text-ink underline underline-offset-4">
+            <Link href="/" className="text-on-dark underline underline-offset-4">
               About the chapter
             </Link>
           </p>
           <div className="mt-3">
-            <SiteCredit />
+            <SiteCredit onDark />
           </div>
         </footer>
       </Container>

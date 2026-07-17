@@ -34,7 +34,7 @@ export function SaveContactButton({ vcard, filename }: { vcard: string; filename
   }
 
   return (
-    <Button variant="primary" size="lg" fullWidth onClick={download}>
+    <Button variant="onDarkSolid" size="lg" fullWidth onClick={download}>
       {saved ? 'Contact downloaded' : 'Save to contacts'}
     </Button>
   );

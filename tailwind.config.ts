@@ -27,6 +27,16 @@ const config: Config = {
           ink: rgb('accent-ink'),
         },
         whatsapp: rgb('whatsapp'),
+
+        // Civil section only. See the note in globals.css.
+        canvas: rgb('canvas'),
+        panel: rgb('panel'),
+        'panel-line': rgb('panel-line'),
+        'on-dark': {
+          DEFAULT: rgb('on-dark'),
+          2: rgb('on-dark-2'),
+          3: rgb('on-dark-3'),
+        },
       },
 
       fontFamily: {

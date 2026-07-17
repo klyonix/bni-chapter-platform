@@ -12,15 +12,21 @@ import { cn } from '@/utils/cn';
  * `press` supplies the tap response in CSS — see docs/MOTION.md. That keeps this
  * a server component, so the member profile ships no client JS for its buttons.
  */
-type Variant = 'primary' | 'whatsapp' | 'secondary';
+type Variant = 'primary' | 'whatsapp' | 'secondary' | 'onDark' | 'onDarkSolid';
 type Size = 'default' | 'lg';
 
 const VARIANTS: Record<Variant, string> = {
   // Filled buttons are Ink, never red. Red at button scale is the corporate
   // flyer signature the design is avoiding (plan §7).
   primary: 'bg-ink text-surface hover:bg-ink-700',
-  whatsapp: 'bg-whatsapp text-surface hover:bg-whatsapp/90',
+  // Green earns its place on the dark canvas, where it reads as the WhatsApp
+  // convention rather than fighting the red accent as it did on the light page.
+  // #0F7A6E, not brand #128C7E, which fails AA against white at 4.14:1.
+  whatsapp: 'bg-whatsapp text-white hover:brightness-110',
   secondary: 'border border-hairline bg-surface text-ink hover:bg-paper',
+  // Civil section. Outlined against the panel, so it recedes behind WhatsApp.
+  onDark: 'border border-panel-line bg-canvas/60 text-on-dark hover:border-on-dark-3',
+  onDarkSolid: 'bg-on-dark text-canvas hover:brightness-90',
 };
 
 const SIZES: Record<Size, string> = {

@@ -35,6 +35,23 @@
   /* WhatsApp. Darkened from brand #128C7E, which is 4.14:1 with white
      and fails AA. This passes at 5.21:1 and reads calmer besides. */
   --whatsapp: 15 122 110; /* #0F7A6E */
+
+  /**
+   * Dark canvas — the Civil Power Team section only.
+   *
+   * The home page stays warm paper and Pollachi; /civil goes technical: deep
+   * navy, drafting grid, one accent per trade. The contrast between the two is
+   * deliberate. Home is about the people, /civil is about the work, and a
+   * blueprint is dark for a reason.
+   *
+   * Every value below is measured against the card, not guessed.
+   */
+  --canvas: 11 18 32; /* #0B1220  page */
+  --panel: 19 30 51; /* #131E33  card */
+  --panel-line: 34 48 74; /* #22304A  hairline on dark */
+  --on-dark: 242 245 250; /* #F2F5FA  15.24:1 — headings */
+  --on-dark-2: 169 183 206; /* #A9B7CE   8.21:1 — body */
+  --on-dark-3: 124 140 166; /* #7C8CA6   4.88:1 — meta, lightest AA-safe */
 }
 
 html {
@@ -130,6 +147,96 @@ body {
 }
 
 /**
+ * Member grid reveal.
+ *
+ * Twelve cards dealt out rather than dumped. The step is 45ms and it stops
+ * compounding after the 8th card — a 12-step queue would leave the last card
+ * arriving over half a second late, and a QR visitor should never be waiting on
+ * choreography. Total settle is ~0.7s and the content is readable throughout,
+ * because the animation only moves it 12px and never past ~0 opacity for long.
+ */
+.deal > * {
+  animation: rise 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.deal > *:nth-child(1) {
+  animation-delay: 0ms;
+}
+.deal > *:nth-child(2) {
+  animation-delay: 45ms;
+}
+.deal > *:nth-child(3) {
+  animation-delay: 90ms;
+}
+.deal > *:nth-child(4) {
+  animation-delay: 135ms;
+}
+.deal > *:nth-child(5) {
+  animation-delay: 180ms;
+}
+.deal > *:nth-child(6) {
+  animation-delay: 225ms;
+}
+.deal > *:nth-child(7) {
+  animation-delay: 270ms;
+}
+.deal > *:nth-child(n + 8) {
+  animation-delay: 315ms;
+}
+
+/**
+ * Member card.
+ *
+ * `--member-accent` is set inline per card from the profession registry. Colour
+ * cannot come from a Tailwind class here — the accent is data, and Tailwind can
+ * only emit classes it can see in source at build time.
+ */
+.member-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgb(var(--panel-line));
+  background-color: rgb(var(--panel));
+  transition:
+    border-color 200ms ease-out,
+    transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* The trade's signature: a rule of its colour along the top edge. */
+.member-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: var(--member-accent);
+}
+
+/* Faint wash of the accent, so each card sits in its own light. */
+.member-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background: radial-gradient(120% 90% at 0% 0%, var(--member-accent), transparent 60%);
+}
+
+@media (hover: hover) {
+  .member-card:hover {
+    border-color: color-mix(in srgb, var(--member-accent) 45%, transparent);
+    transform: translateY(-2px);
+  }
+}
+
+.member-card:active {
+  transform: translateY(0) scale(0.995);
+}
+
+/* Portrait/initials frame, ringed in the trade's colour. */
+.member-figure {
+  border: 1px solid color-mix(in srgb, var(--member-accent) 35%, transparent);
+  background: color-mix(in srgb, var(--member-accent) 8%, rgb(var(--canvas)));
+}
+
+/**
  * Page motifs.
  *
  * Both are line-work drawn as inline SVG — no image request, no gradient, no
@@ -171,14 +278,19 @@ body {
   mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 88%);
 }
 
-/* Drafting grid — the graph paper a civil drawing is set out on. */
+/**
+ * Drafting grid — the graph paper a civil drawing is set out on.
+ *
+ * Drawn in a pale blue (#8FB4E8), not ink: this now sits on the dark canvas,
+ * where a near-black grid would be invisible. Blueprint lines, on a blueprint.
+ */
 .motif-grid::before {
   height: 100%;
-  opacity: 0.05;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath d='M24 0 L0 0 0 24' fill='none' stroke='%2314110F' stroke-width='1'/%3E%3C/svg%3E");
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath d='M24 0 L0 0 0 24' fill='none' stroke='%238FB4E8' stroke-width='1'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-position: top center;
   background-size: 24px 24px;
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 40%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 40%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 45%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 45%, transparent 100%);
 }
