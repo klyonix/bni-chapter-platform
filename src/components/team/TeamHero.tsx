@@ -67,7 +67,7 @@ export function TeamHero({
 
       <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-8">
         {/* Left column: heading, description, counters, CTA. */}
-        <m.div style={{ opacity, y }} className="order-2 lg:order-1">
+        <m.div style={{ opacity, y }} className="relative z-10 order-2 lg:order-1">
           <p className="rise text-micro uppercase tracking-wide text-ink-400">{eyebrow}</p>
           <h1 className="rise rise-1 mt-3 text-balance font-display text-display-l text-ink">
             {heading}
@@ -101,10 +101,19 @@ export function TeamHero({
           </div>
         </m.div>
 
-        {/* Right column: the construction scene. Sinks and fades on scroll. */}
+        {/*
+          Right column: the construction scene. Sinks and fades on scroll.
+
+          Behind the text (-z-10), not above it. On a phone the art stacks above
+          the copy, so sinking it 140px runs it straight into the eyebrow and the
+          heading. Restyling the text to survive that would be treating the
+          symptom: the art is decoration and the copy is the page, so the copy
+          wins and the art passes behind it. pointer-events-none so the drifted
+          art can never eat a tap meant for the heading.
+        */}
         <m.div
           style={{ opacity: artOpacity, y: artY }}
-          className="order-1 mx-auto w-full max-w-[420px] lg:order-2"
+          className="pointer-events-none relative -z-10 order-1 mx-auto w-full max-w-[420px] lg:z-0 lg:order-2"
         >
           <DotLottie src={lottieSrc} className="aspect-[1200/1080] w-full" />
         </m.div>

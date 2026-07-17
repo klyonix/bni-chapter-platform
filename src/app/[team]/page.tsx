@@ -88,19 +88,26 @@ export default async function TeamPage({ params }: { params: Promise<Params> }) 
             <MemberGrid members={members} teamName={teamName} />
           </div>
 
-          {/* End of the page. */}
+          {/* End of the page: the line first, then the animation as a full-bleed
+              band beneath it. Stacked, never layered — text over a moving
+              illustration is unreadable, and "fix it with the font" would just be
+              a slower way of finding that out. */}
           <section className="mt-20 text-center">
-            <DotLottie
-              src="/lottie/footer.lottie"
-              className="mx-auto aspect-[1024/928] w-[260px] sm:w-[300px]"
-            />
-            <p className="mt-6 text-balance font-display text-display-m text-ink">
+            <p className="text-balance font-display text-display-m text-ink">
               Together We Build. Together We Grow.
             </p>
             <p className="mx-auto mt-4 max-w-[26rem] text-body text-ink-500">
               Every member here is vouched for by the rest of the chapter. That is the whole point
               of the room.
             </p>
+
+            {/* Edge to edge on a phone: -mx-5 cancels the Container's px-5 gutter
+                so the band reaches both screen edges, then it settles back to a
+                sensible size once there is room. */}
+            <DotLottie
+              src="/lottie/footer.lottie"
+              className="-mx-5 mt-8 aspect-[1024/928] w-[calc(100%+2.5rem)] sm:mx-auto sm:mt-10 sm:w-[340px]"
+            />
           </section>
 
           <footer className="mt-16 border-t border-hairline pt-6">

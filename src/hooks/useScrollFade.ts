@@ -64,8 +64,11 @@ export function useScrollDrift(ref: RefObject<HTMLElement | null>): {
     offset: ['start start', 'end start'],
   });
 
-  const opacity = useTransform(scrollYProgress, [0, 0.4, 0.7], [1, 0.45, 0]);
-  const y = useTransform(scrollYProgress, [0, 1], [0, 60]);
+  // 140px of travel, not 60: at 60 the sink was too polite to read as movement
+  // against a whole viewport of scroll. Gone by 0.7 — the CTA sits near the
+  // hero's bottom edge, so that is roughly where "Meet the team" takes over.
+  const opacity = useTransform(scrollYProgress, [0, 0.35, 0.7], [1, 0.5, 0]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, 140]);
 
   return reduced ? { opacity: 1, y: 0 } : { opacity, y };
 }
