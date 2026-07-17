@@ -103,7 +103,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           {/* eslint-disable-next-line react/no-danger */}
           <style
             dangerouslySetInnerHTML={{
-              __html: '[data-reveal]{opacity:1!important;transform:none!important}',
+              __html:
+                '[data-reveal]{opacity:1!important;transform:none!important}' +
+                // The stat counters render 0 and count up. Without JS that is a
+                // wrong number, not a missing one, so hide the animated span and
+                // let the <noscript> beside it show the real value.
+                '[data-counter]{display:none}',
             }}
           />
         </noscript>
