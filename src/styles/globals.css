@@ -273,6 +273,102 @@ body {
 }
 
 /**
+ * ── The Pollachi horizon (home hero) ─────────────────────────────────────────
+ *
+ * Aerial-perspective colour grade: the near palms are full ink, and each layer
+ * back toward the Ghats desaturates to blueprint blue. This is set with three
+ * flat stroke colours rather than a gradient, so it stays a drawing.
+ */
+.horizon {
+  color: rgb(var(--ink)); /* the palms and near contour inherit this */
+}
+
+/* Keep every line at its drawn weight however far the wide viewBox is scaled
+   down — a 1.2px stroke at a phone's 33% scale is under a device pixel and the
+   whole band would render invisibly, which reads as "nothing mounted". */
+.horizon path {
+  vector-effect: non-scaling-stroke;
+}
+
+.ridge-far {
+  stroke: #a9c1de;
+}
+.ridge-mid {
+  stroke: #7c9dc4;
+}
+.ridge-near {
+  stroke: #5b7fa6;
+}
+.horizon .water {
+  stroke: #6f93bc;
+}
+.horizon .plain {
+  opacity: 0.5;
+}
+
+/**
+ * The road draws itself uphill on arrival, then stays.
+ *
+ * The undrawn state lives ONLY inside the no-preference + supports block. A
+ * browser without scroll-driven animation, or a visitor who asked for less
+ * motion, gets a road that is simply already drawn — decoration must fail to
+ * "static", never to "absent". The reduced-motion audience is excluded on
+ * purpose: draw() is duration-based and the global reduce rule would crush it to
+ * a 0.01ms flash, which is worse than just showing the finished line.
+ */
+.road {
+  /* Ink-700, not full ink: the one human-made line in the drawing, clearly the
+     "made" mark against the "land" lines, without out-shouting the near palms. */
+  stroke: #3d3833;
+  stroke-dasharray: 1400;
+  stroke-dashoffset: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .road {
+    stroke-dashoffset: 1400;
+    animation: draw 2.4s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+  }
+  /* The still water gets one slow reflection shimmer, a small horizontal slide
+     on the tick marks only. Transform-only, so it stays on the compositor. */
+  .horizon .water path:last-child {
+    animation: water-shimmer 7s ease-in-out infinite;
+  }
+  .palm-a {
+    transform-origin: 156px 286px;
+    animation: palm-sway 11s ease-in-out infinite;
+  }
+  .palm-b {
+    transform-origin: 272px 312px;
+    animation: palm-sway 13s ease-in-out infinite 0.6s;
+  }
+}
+@keyframes water-shimmer {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(10px);
+  }
+}
+@keyframes palm-sway {
+  0%,
+  100% {
+    transform: rotate(-0.5deg);
+  }
+  50% {
+    transform: rotate(0.5deg);
+  }
+}
+
+/* The elevation-profile divider between sections. Blueprint blue, faint — a
+   horizon, not a hard rule. */
+.ridge-rule {
+  color: #5b7fa6;
+  opacity: 0.5;
+}
+
+/**
  * ── Premium card shell ───────────────────────────────────────────────────────
  *
  * `--member-accent`, `--card-pattern` and `--card-gradient` are set inline per
@@ -531,65 +627,6 @@ body {
 .premium-card[data-open] .member-panel {
   max-height: 40rem;
   opacity: 1;
-}
-
-/**
- * Page motifs.
- *
- * Both are line-work drawn as inline SVG — no image request, no gradient, no
- * blur. Each earns its place by referring to something real: the grove is
- * Pollachi, the grid is the graph paper a civil drawing sits on. They are set
- * low enough to read as texture rather than illustration, and masked so they
- * never sit behind body copy.
- *
- * Both render on a ::before so the mask fades the motif and not the content.
- */
-.motif {
-  position: relative;
-  isolation: isolate;
-}
-
-.motif::before {
-  content: '';
-  position: absolute;
-  inset: 0 0 auto 0;
-  z-index: -1;
-  pointer-events: none;
-}
-
-/**
- * Coconut grove — Pollachi. Sparse engraved palms behind the hero only.
- *
- * Fronds arc up and then droop, which is what separates a palm from a
- * starburst. Trunks are drawn heavier than the fronds so the crowns are
- * anchored rather than floating.
- */
-.motif-grove::before {
-  height: 30rem;
-  opacity: 0.075;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='420' viewBox='0 0 480 420'%3E%3Cg fill='none' stroke='%2314110F' stroke-linecap='round'%3E%3Cg stroke-width='2.4'%3E%3Cpath d='M110 150 C 100 126 94 110 90 88'/%3E%3Cpath d='M111 152 C 122 130 130 114 136 96'/%3E%3Cpath d='M109 153 C 88 140 58 138 34 150'/%3E%3Cpath d='M111 154 C 133 140 163 139 187 151'/%3E%3Cpath d='M109 156 C 88 154 60 166 41 191'/%3E%3Cpath d='M112 156 C 133 154 161 166 180 191'/%3E%3Cpath d='M110 158 C 97 164 82 184 75 210'/%3E%3Cpath d='M112 158 C 125 164 140 184 147 210'/%3E%3Cpath d='M330 100 C 322 78 316 60 314 38'/%3E%3Cpath d='M331 102 C 342 82 351 66 358 48'/%3E%3Cpath d='M329 103 C 308 90 278 88 254 100'/%3E%3Cpath d='M331 104 C 353 90 383 89 407 101'/%3E%3Cpath d='M329 106 C 308 104 280 116 261 141'/%3E%3Cpath d='M332 106 C 353 104 381 116 400 141'/%3E%3Cpath d='M330 108 C 317 114 302 134 295 160'/%3E%3Cpath d='M332 108 C 345 114 360 134 367 160'/%3E%3C/g%3E%3Cg stroke-width='3.6'%3E%3Cpath d='M104 420 C 108 330 114 240 110 152'/%3E%3Cpath d='M338 420 C 334 320 326 200 330 102'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  background-repeat: repeat-x;
-  background-position: top center;
-  background-size: 260px 300px;
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 88%);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 88%);
-}
-
-/**
- * Drafting grid — the graph paper a civil drawing is set out on.
- *
- * Drawn in a pale blue (#8FB4E8), not ink: this now sits on the dark canvas,
- * where a near-black grid would be invisible. Blueprint lines, on a blueprint.
- */
-.motif-grid::before {
-  height: 100%;
-  opacity: 0.07;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath d='M24 0 L0 0 0 24' fill='none' stroke='%238FB4E8' stroke-width='1'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-position: top center;
-  background-size: 24px 24px;
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 45%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 45%, transparent 100%);
 }
 
 /**

@@ -2,6 +2,9 @@ import Link from 'next/link';
 import { Container } from '@/components/primitives/Container';
 import { Hairline } from '@/components/primitives/Section';
 import { SiteCredit } from '@/components/shared/SiteCredit';
+import { MarketMark } from '@/components/home/MarketMark';
+import { PollachiHorizon } from '@/components/home/PollachiHorizon';
+import { RidgeRule } from '@/components/home/RidgeRule';
 import { CHAPTER } from '@/data/chapter';
 import { getMembersByTeam, getTeams } from '@/lib/members';
 
@@ -21,12 +24,12 @@ export default function HomePage() {
   const meetingConfirmed = CHAPTER.meeting.day !== 'TBC';
 
   return (
-    <main className="motif motif-grove min-h-screen pb-16">
+    <main className="min-h-screen pb-16">
       <Container>
-        <section className="pb-12 pt-16">
-          <p className="rise text-micro uppercase text-ink-400">
-            {CHAPTER.name} · {CHAPTER.town}
-          </p>
+        <section className="pt-16">
+          {/* A dateline, not a tagline: where these people are and since when.
+              Founding year does quiet trust work that no adjective can. */}
+          <p className="rise text-micro uppercase text-ink-400">{CHAPTER.name} · Founded 2019</p>
           {/* text-balance evens the line lengths instead of leaving "work."
               orphaned on its own line. A hand-placed <br> only ever looks right
               at one width. */}
@@ -36,7 +39,7 @@ export default function HomePage() {
           <p className="rise rise-2 mt-5 max-w-[30rem] text-body-l text-ink-700">
             {meetingConfirmed
               ? `We meet every ${CHAPTER.meeting.day} in ${CHAPTER.town}.`
-              : `A BNI chapter in ${CHAPTER.town}.`}{' '}
+              : `${CHAPTER.name} is a BNI chapter in ${CHAPTER.town}, at the foot of the Western Ghats.`}{' '}
             Members spend the week looking for work to pass to each other.
           </p>
 
@@ -48,9 +51,17 @@ export default function HomePage() {
           >
             Meet the Civil team
           </Link>
+
+          {/* The landscape sits below the copy, full width, edge to edge on a
+              phone. It is the identity, so it gets room; the copy is the page,
+              so it comes first and is never set over the drawing. -mx-5 cancels
+              the Container gutter to reach both screen edges. */}
+          <div className="rise rise-3 -mx-5 mt-12 w-[calc(100%+2.5rem)]">
+            <PollachiHorizon />
+          </div>
         </section>
 
-        <Hairline />
+        <RidgeRule />
 
         <section className="py-12">
           <h2 className="text-micro uppercase text-ink-400">What BNI is</h2>
@@ -79,6 +90,12 @@ export default function HomePage() {
             An architect, a structural engineer and a contractor meet the same customer at three
             different moments. Put them in one room and a referral costs nobody anything.
           </p>
+
+          {/* The old market arcade: heritage as an anchor for the place, kept
+              small and to one side so it reads as a mark, not an illustration. */}
+          <div className="mt-8 max-w-[220px] text-ink-400">
+            <MarketMark />
+          </div>
         </section>
 
         <Hairline />
@@ -139,7 +156,7 @@ export default function HomePage() {
           </ul>
         </section>
 
-        <Hairline />
+        <RidgeRule />
 
         <section className="py-12">
           <h2 className="font-display text-display-m text-ink">Come and see it</h2>
