@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Container } from '@/components/primitives/Container';
-import { DotLottie } from '@/components/ui/DotLottie';
 import { SiteCredit } from '@/components/shared/SiteCredit';
 import { TeamHero } from '@/components/team/TeamHero';
+import { ToppingOut } from '@/components/team/ToppingOut';
 import { MemberGrid } from '@/components/team/MemberGrid';
 import { CHAPTER } from '@/data/chapter';
 import { getLiveTeams, getMembersByTeam, getTeamBySlug } from '@/lib/members';
@@ -88,7 +88,7 @@ export default async function TeamPage({ params }: { params: Promise<Params> }) 
             <MemberGrid members={members} teamName={teamName} />
           </div>
 
-          {/* End of the page: the line first, then the animation as a full-bleed
+          {/* End of the page: the line first, then the drawing as a full-bleed
               band beneath it. Stacked, never layered — text over a moving
               illustration is unreadable, and "fix it with the font" would just be
               a slower way of finding that out. */}
@@ -102,12 +102,12 @@ export default async function TeamPage({ params }: { params: Promise<Params> }) 
             </p>
 
             {/* Edge to edge on a phone: -mx-5 cancels the Container's px-5 gutter
-                so the band reaches both screen edges, then it settles back to a
-                sensible size once there is room. */}
-            <DotLottie
-              src="/lottie/footer.lottie"
-              className="-mx-5 mt-8 aspect-[1024/928] w-[calc(100%+2.5rem)] sm:mx-auto sm:mt-10 sm:w-[340px]"
-            />
+                so the band reaches both screen edges. A band wants the full width
+                at every size, so unlike the tractor it replaces there is no
+                desktop clamp — it just keeps the gutter back once there is one. */}
+            <div className="-mx-5 mt-8 w-[calc(100%+2.5rem)] sm:mx-0 sm:mt-10 sm:w-full">
+              <ToppingOut />
+            </div>
           </section>
 
           <footer className="mt-16 border-t border-hairline pt-6">

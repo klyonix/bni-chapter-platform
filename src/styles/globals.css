@@ -198,77 +198,27 @@ body {
  * rather than off; the fallback has to be the safe state.
  */
 /**
- * Keep the linework at its drawn weight however far the scene is scaled.
- *
- * Without this the hero is invisible, and it looks like nothing rendered at all:
- * `meet` fits the 1200-wide viewBox into a 375px phone, a 31% scale, which takes
- * a 1.5px stroke down to about 0.47px — under a device pixel. The drawing was
- * there the whole time, just too thin to see.
+ * ── Topping-out band, at the end of /civil ───────────────────────────────────
  */
-.hero-scene path {
-  vector-effect: non-scaling-stroke;
-}
 
-.hero-scene {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
+.topout {
   /* Blueprint blue, not ink: this is a drawing of a building, and at the weight
-     needed to actually read it, near-black would compete with the headline. */
+     needed to actually read it, near-black would compete with the tagline it
+     sits under. */
   color: #5b7fa6;
-  opacity: 0.4;
-  /* NO mask. The scene is bottom-anchored (xMidYMax), so the crane and the frame
-     live in the lower half — a mask fading the bottom erased the entire drawing,
-     which is why this looked empty. The scroll fade below does the fading. */
+  opacity: 0.55;
 }
 
-@supports (animation-timeline: scroll()) {
-  .hero-scene {
-    animation: hero-fade linear both;
-    animation-timeline: scroll(root block);
-    /* Full strength at the top; gone by the end of the page. */
-    animation-range: 0% 100%;
-  }
-}
-
-@keyframes hero-fade {
-  from {
-    opacity: 0.75;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
-/* Floors draw themselves in, bottom-up, like a frame going up. */
-.hero-floor {
-  stroke-dasharray: 1400;
-  stroke-dashoffset: 1400;
-  animation: draw 1.6s ease-out both;
-}
-.hero-floor-1 {
-  animation-delay: 0.1s;
-}
-.hero-floor-2 {
-  animation-delay: 0.4s;
-}
-.hero-floor-3 {
-  animation-delay: 0.7s;
-}
-.hero-floor-4 {
-  animation-delay: 1s;
-}
-.hero-floor-5 {
-  animation-delay: 1.3s;
-}
-
-.hero-far path,
-.hero-ground,
-.hero-mast {
-  stroke-dasharray: 1600;
-  stroke-dashoffset: 1600;
-  animation: draw 2s ease-out both;
+/**
+ * Keep the linework at its drawn weight however far the band is scaled.
+ *
+ * Without this it renders invisibly and looks like the component never mounted:
+ * the 1200-wide viewBox fits into a 390px phone at a 33% scale, which takes a
+ * 1.5px stroke down to about 0.49px — under a device pixel. The drawing is there
+ * the whole time, just too thin to see. This cost an hour once already.
+ */
+.topout path {
+  vector-effect: non-scaling-stroke;
 }
 
 @keyframes draw {
@@ -277,87 +227,48 @@ body {
   }
 }
 
-/* The jib sways. Slow and small — a crane at rest, not a metronome. */
-.hero-jib {
-  transform-origin: 800px 250px;
-  animation: sway 14s ease-in-out infinite;
+/**
+ * The frame draws itself in as the band is scrolled to.
+ *
+ * The undrawn state lives INSIDE @supports, so a browser without scroll-driven
+ * animation gets a finished drawing rather than a blank box. Same rule as the
+ * hero reveals: the failure mode of decoration must be "static", never "absent".
+ *
+ * view() rather than scroll(): it animates against its own position in the
+ * viewport, so it draws when it is actually looked at — this sits at the foot of
+ * a long page, and a root-scroll timeline would have finished long before anyone
+ * arrived.
+ *
+ * Gated on no-preference too. view() ignores animation-duration, so the global
+ * reduced-motion rule that crushes durations to 0.01ms cannot reach it — it
+ * would stay scroll-linked, which is the one kind of motion that audience most
+ * specifically does not want. Excluding the block leaves them the drawn state.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .topout-draw {
+      stroke-dasharray: 2400;
+      stroke-dashoffset: 2400;
+      animation: draw 1s linear both;
+      animation-timeline: view();
+      animation-range: entry 5% cover 45%;
+    }
+  }
+}
+
+/* The jib sways, and the last beam and its evergreen hang off it and go along.
+   Slow and small — a crane easing a beam in, not a metronome. */
+.topout-jib {
+  transform-origin: 880px 40px;
+  animation: sway 16s ease-in-out infinite;
 }
 @keyframes sway {
   0%,
   100% {
-    transform: rotate(-2.5deg);
+    transform: rotate(-1.4deg);
   }
   50% {
-    transform: rotate(2.5deg);
-  }
-}
-
-/* The load rides the jib and bobs against it, slightly out of phase. */
-.hero-hook {
-  animation: hoist 9s ease-in-out infinite;
-}
-@keyframes hoist {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-46px);
-  }
-}
-
-/* Dimension lines: a surveyor checking, then moving on. */
-.hero-dim {
-  opacity: 0;
-  animation: dim-blink 11s ease-in-out infinite;
-}
-.hero-dim-1 {
-  animation-delay: 2s;
-}
-.hero-dim-2 {
-  animation-delay: 6s;
-}
-@keyframes dim-blink {
-  0%,
-  70%,
-  100% {
-    opacity: 0;
-  }
-  12%,
-  55% {
-    opacity: 1;
-  }
-}
-
-/**
- * Topping-out mark at the end of the page.
- *
- * Uses view() rather than scroll(): it animates against its own position in the
- * viewport, so it draws when it is actually looked at. Where scroll-driven
- * animation is unsupported it is simply drawn already — the safe state.
- */
-.topout-line,
-.topout-beam,
-.topout-flag {
-  stroke-dasharray: 400;
-  stroke-dashoffset: 0;
-}
-
-@supports (animation-timeline: view()) {
-  .topout-line,
-  .topout-beam,
-  .topout-flag {
-    stroke-dashoffset: 400;
-    animation: draw 1s ease-out both;
-    animation-timeline: view();
-    animation-range: entry 10% cover 42%;
-  }
-  /* The beam lands, then the flag goes up. */
-  .topout-beam {
-    animation-range: entry 22% cover 50%;
-  }
-  .topout-flag {
-    animation-range: entry 34% cover 58%;
+    transform: rotate(1.4deg);
   }
 }
 
