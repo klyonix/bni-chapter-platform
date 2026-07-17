@@ -36,6 +36,9 @@
      and fails AA. This passes at 5.21:1 and reads calmer besides. */
   --whatsapp: 15 122 110; /* #0F7A6E */
 
+  /* Card shell radius. One value, referenced by the `card` radius token. */
+  --radius-card: 20px;
+
   /**
    * Dark canvas — the Civil Power Team section only.
    *

@@ -56,25 +56,50 @@ const config: Config = {
         micro: ['0.75rem', { lineHeight: '1rem', letterSpacing: '0.08em', fontWeight: '500' }], // 12/16 tracked
       },
 
-      // One radius. The brief rejects overly rounded components; large radii
-      // are a template tell. Pills are opt-in via `rounded-full` on chips only.
+      /**
+       * Radius scale.
+       *
+       * `card` (20px) for card shells, `xl` (12px) for controls inside them,
+       * `rounded-full` for pills and icon buttons. Three values, each with a job
+       * — the earlier single 6px was right for a flat list and reads mean on a
+       * raised surface.
+       */
       borderRadius: {
         DEFAULT: '6px',
         md: '6px',
         lg: '6px',
+        xl: '12px',
+        card: 'var(--radius-card)',
       },
 
-      // Borders carry elevation. This is the only shadow in the system.
+      /**
+       * Shadow scale — three named steps, swapped on state change.
+       *
+       * Each is two shadows: a tight contact shadow and a wide ambient one. A
+       * single blurred drop shadow is what makes cards look printed on rather
+       * than resting on the page.
+       *
+       * These are swapped between, never animated: box-shadow is not a
+       * compositor property, so transitioning it repaints every frame. State
+       * changes move `transform` and switch the shadow token in one step.
+       */
       boxShadow: {
-        card: '0 1px 2px rgb(20 17 15 / 0.04)',
+        card: '0 1px 2px rgb(20 17 15 / 0.04), 0 8px 24px -12px rgb(20 17 15 / 0.08)',
+        'card-hover': '0 2px 4px rgb(20 17 15 / 0.05), 0 18px 40px -16px rgb(20 17 15 / 0.16)',
+        'card-press': '0 1px 2px rgb(20 17 15 / 0.06), 0 4px 12px -6px rgb(20 17 15 / 0.10)',
         none: 'none',
       },
 
-      // 44px minimum tap target (§13), expressed as a token so it is not
-      // re-guessed at each call site.
+      /**
+       * Tap targets. `tap` is now 48px, not 44.
+       *
+       * 44 is the iOS floor and what the earlier plan used; the redesign brief
+       * asks for 48, which is also Android's and WCAG 2.5.5's. Raising the floor
+       * is safe — nothing was relying on the extra 4px being absent.
+       */
       spacing: {
-        tap: '2.75rem', // 44px
-        'tap-lg': '3rem', // 48px — primary profile actions
+        tap: '3rem', // 48px — the minimum for anything tappable
+        'tap-lg': '3.5rem', // 56px — primary CTAs
       },
 
       transitionDuration: {
