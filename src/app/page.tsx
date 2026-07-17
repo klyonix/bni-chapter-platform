@@ -11,7 +11,7 @@ export default function HomePage() {
     <main className="flex min-h-screen items-center">
       <Container>
         <p className="text-micro uppercase text-ink-400">BNI Azpire</p>
-        <h1 className="mt-3 font-display text-display-l text-ink">Coimbatore Rural</h1>
+        <h1 className="mt-3 font-display text-display-l text-ink">Greater Coimbatore</h1>
         <p className="mt-4 text-body-l text-ink-700">
           The chapter portfolio is being built. The Civil Power Team page goes live here first.
         </p>

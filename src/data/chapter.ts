@@ -6,7 +6,7 @@
  */
 export const CHAPTER = {
   name: 'BNI Azpire',
-  region: 'Coimbatore Rural',
+  region: 'Greater Coimbatore',
   officialUrl: 'https://bni-coimbatorerural.in/coimbatore-rural-bni-azpire/en-IN/index',
   meeting: { day: 'TBC', time: 'TBC', venue: 'TBC' },
 };

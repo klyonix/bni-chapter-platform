@@ -20,7 +20,7 @@ export const TEAMS: PowerTeam[] = [
     seo: {
       title: 'Civil Power Team',
       description:
-        'Architects, engineers and contractors of the BNI Azpire chapter in Coimbatore Rural. Find the right professional and contact them directly.',
+        'Architects, engineers and contractors of the BNI Azpire chapter in Greater Coimbatore. Find the right professional and contact them directly.',
     },
   },
   {

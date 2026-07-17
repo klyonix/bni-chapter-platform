@@ -34,40 +34,43 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'BNI Power Teams',
-    template: '%s | BNI Power Teams',
+    default: 'BNI Azpire — Greater Coimbatore',
+    template: '%s | BNI Azpire',
   },
   description:
-    'Power team portfolio for a BNI chapter — power teams and their members. Hosted by KlyONIX.',
-  applicationName: 'BNI Power Teams',
+    'The power teams of BNI Azpire, Greater Coimbatore. Find a trusted professional and contact them directly.',
+  applicationName: 'BNI Azpire',
   authors: [{ name: 'KlyONIX Tech Consulting Pvt Ltd' }],
-  keywords: ['BNI', 'Power Team', 'Networking', 'Referrals', 'KlyONIX'],
+  keywords: ['BNI', 'BNI Azpire', 'Coimbatore', 'Power Team', 'Networking', 'Referrals'],
   icons: {
     // Favicon placeholder — replace public/favicon.ico with the real asset.
     icon: '/favicon.ico',
   },
+  // This is what renders when a member link is pasted into WhatsApp, which is
+  // the main way profiles will travel. Worth getting right.
   openGraph: {
     type: 'website',
     url: siteUrl,
-    siteName: 'BNI Power Teams',
-    title: 'BNI Power Teams',
+    siteName: 'BNI Azpire',
+    title: 'BNI Azpire — Greater Coimbatore',
     description:
-      'Power team portfolio for a BNI chapter — power teams and their members. Hosted by KlyONIX.',
-    // OpenGraph image placeholder — add public/images/og-default.png later.
+      'The power teams of BNI Azpire, Greater Coimbatore. Find a trusted professional and contact them directly.',
+    locale: 'en_IN',
+    // TODO(content): og-default.png is still the scaffold placeholder.
     images: [
       {
         url: '/images/og-default.png',
         width: 1200,
         height: 630,
-        alt: 'BNI Power Teams',
+        alt: 'BNI Azpire, Greater Coimbatore',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'BNI Power Teams',
+    title: 'BNI Azpire — Greater Coimbatore',
     description:
-      'Power team portfolio for a BNI chapter — power teams and their members. Hosted by KlyONIX.',
+      'The power teams of BNI Azpire, Greater Coimbatore. Find a trusted professional and contact them directly.',
     images: ['/images/og-default.png'],
   },
 };
