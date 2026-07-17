@@ -21,6 +21,11 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Provided to every step (lint, type check, build) because next.config.mjs
+    # requires it when loaded. Value comes from the repo Actions variable so the
+    # production domain is not hardcoded in this file.
+    env:
+      NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -42,8 +47,6 @@ jobs:
 
       - name: Build and export static site
         run: npm run build
-        env:
-          NEXT_PUBLIC_SITE_URL: https://azpire.klyonix.in
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
