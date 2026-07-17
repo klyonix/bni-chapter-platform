@@ -15,12 +15,14 @@ export const TEAMS: PowerTeam[] = [
     name: 'Civil',
     // Written for a stranger who scanned a code on a water bottle and has no
     // idea what BNI or a "power team" is. No internal language, no claims.
-    tagline: 'Twelve professionals who design, build and finish spaces in Coimbatore.',
+    tagline: 'Twelve professionals who design, build and finish spaces in and around Pollachi.',
     status: 'live',
     seo: {
       title: 'Civil Power Team',
+      // "civil contractors Pollachi" is a far more winnable and more useful
+      // search than anything pitched at Coimbatore as a whole.
       description:
-        'Architects, engineers and contractors of the BNI Azpire chapter in Greater Coimbatore. Find the right professional and contact them directly.',
+        'Architects, engineers and contractors of the BNI Azpire chapter in Pollachi. Find the right professional and contact them directly.',
     },
   },
   {
@@ -29,19 +31,5 @@ export const TEAMS: PowerTeam[] = [
     tagline: '',
     status: 'coming-soon',
     seo: { title: 'Manufacturing Power Team', description: '' },
-  },
-  {
-    slug: 'healthcare',
-    name: 'Healthcare',
-    tagline: '',
-    status: 'coming-soon',
-    seo: { title: 'Healthcare Power Team', description: '' },
-  },
-  {
-    slug: 'finance',
-    name: 'Finance',
-    tagline: '',
-    status: 'coming-soon',
-    seo: { title: 'Finance Power Team', description: '' },
   },
 ];

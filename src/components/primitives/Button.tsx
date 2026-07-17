@@ -8,6 +8,9 @@ import { cn } from '@/utils/cn';
  *
  * Renders an <a> when `href` is present, otherwise a <button>. Contact actions
  * are overwhelmingly links (tel:, wa.me, mailto:), so anchors are the norm.
+ *
+ * `press` supplies the tap response in CSS — see docs/MOTION.md. That keeps this
+ * a server component, so the member profile ships no client JS for its buttons.
  */
 type Variant = 'primary' | 'whatsapp' | 'secondary';
 type Size = 'default' | 'lg';
@@ -26,8 +29,7 @@ const SIZES: Record<Size, string> = {
 };
 
 const BASE =
-  'inline-flex select-none items-center justify-center gap-2 rounded ' +
-  'font-sans transition-colors duration-tap ' +
+  'press inline-flex select-none items-center justify-center gap-2 rounded font-sans ' +
   'disabled:cursor-not-allowed disabled:border-hairline disabled:bg-surface disabled:text-ink-200';
 
 type SharedProps = {
@@ -39,14 +41,10 @@ type SharedProps = {
 };
 
 type AsButton = SharedProps &
-  Omit<ButtonHTMLAttributes<HTMLButtonElement>, keyof SharedProps> & {
-    href?: undefined;
-  };
+  Omit<ButtonHTMLAttributes<HTMLButtonElement>, keyof SharedProps> & { href?: undefined };
 
 type AsAnchor = SharedProps &
-  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, keyof SharedProps> & {
-    href: string;
-  };
+  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, keyof SharedProps> & { href: string };
 
 export type ButtonProps = AsButton | AsAnchor;
 

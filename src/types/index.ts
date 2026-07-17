@@ -3,7 +3,7 @@
  */
 import type { ProfessionSlug } from '@/data/professions';
 
-export type PowerTeamSlug = 'civil' | 'manufacturing' | 'healthcare' | 'finance';
+export type PowerTeamSlug = 'civil' | 'manufacturing';
 
 export interface PowerTeam {
   slug: PowerTeamSlug;

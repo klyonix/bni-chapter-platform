@@ -66,3 +66,119 @@ body {
 :focus-visible {
   @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-paper;
 }
+
+/**
+ * Press feedback.
+ *
+ * On a phone there is no hover, so a tap with no response reads as a page that
+ * missed the tap — which is when people tap again. This is the single most
+ * useful piece of motion on the site.
+ *
+ * CSS rather than Motion's whileTap: see docs/MOTION.md. Motion's animation
+ * loop does not run under LazyMotion in this stack, and :active is instant,
+ * free, and cannot strand an element mid-animation.
+ */
+.press {
+  transition:
+    transform 100ms ease-out,
+    background-color 150ms ease-out,
+    border-color 150ms ease-out;
+}
+
+.press:active {
+  transform: scale(0.975);
+}
+
+/**
+ * Arrival animation.
+ *
+ * CSS rather than Motion, deliberately. Motion renders `initial={{opacity:0}}`
+ * into the server HTML, so a visitor whose JS is slow or blocked would be shown
+ * a blank page — the exact failure this site cannot afford when someone scans a
+ * QR code on a water bottle over 4G. CSS animation needs no JS, costs no bytes,
+ * and looks identical.
+ *
+ * The prefers-reduced-motion block above already reduces these to nothing.
+ *
+ * Short and shallow on purpose: 10px and under half a second. Content arriving
+ * is a hint that the page is alive, not a performance to sit through.
+ */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise {
+  animation: rise 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Stagger. Each step is small enough to read as one movement, not a queue. */
+.rise-1 {
+  animation-delay: 60ms;
+}
+.rise-2 {
+  animation-delay: 120ms;
+}
+.rise-3 {
+  animation-delay: 180ms;
+}
+
+/**
+ * Page motifs.
+ *
+ * Both are line-work drawn as inline SVG — no image request, no gradient, no
+ * blur. Each earns its place by referring to something real: the grove is
+ * Pollachi, the grid is the graph paper a civil drawing sits on. They are set
+ * low enough to read as texture rather than illustration, and masked so they
+ * never sit behind body copy.
+ *
+ * Both render on a ::before so the mask fades the motif and not the content.
+ */
+.motif {
+  position: relative;
+  isolation: isolate;
+}
+
+.motif::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/**
+ * Coconut grove — Pollachi. Sparse engraved palms behind the hero only.
+ *
+ * Fronds arc up and then droop, which is what separates a palm from a
+ * starburst. Trunks are drawn heavier than the fronds so the crowns are
+ * anchored rather than floating.
+ */
+.motif-grove::before {
+  height: 30rem;
+  opacity: 0.075;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='420' viewBox='0 0 480 420'%3E%3Cg fill='none' stroke='%2314110F' stroke-linecap='round'%3E%3Cg stroke-width='2.4'%3E%3Cpath d='M110 150 C 100 126 94 110 90 88'/%3E%3Cpath d='M111 152 C 122 130 130 114 136 96'/%3E%3Cpath d='M109 153 C 88 140 58 138 34 150'/%3E%3Cpath d='M111 154 C 133 140 163 139 187 151'/%3E%3Cpath d='M109 156 C 88 154 60 166 41 191'/%3E%3Cpath d='M112 156 C 133 154 161 166 180 191'/%3E%3Cpath d='M110 158 C 97 164 82 184 75 210'/%3E%3Cpath d='M112 158 C 125 164 140 184 147 210'/%3E%3Cpath d='M330 100 C 322 78 316 60 314 38'/%3E%3Cpath d='M331 102 C 342 82 351 66 358 48'/%3E%3Cpath d='M329 103 C 308 90 278 88 254 100'/%3E%3Cpath d='M331 104 C 353 90 383 89 407 101'/%3E%3Cpath d='M329 106 C 308 104 280 116 261 141'/%3E%3Cpath d='M332 106 C 353 104 381 116 400 141'/%3E%3Cpath d='M330 108 C 317 114 302 134 295 160'/%3E%3Cpath d='M332 108 C 345 114 360 134 367 160'/%3E%3C/g%3E%3Cg stroke-width='3.6'%3E%3Cpath d='M104 420 C 108 330 114 240 110 152'/%3E%3Cpath d='M338 420 C 334 320 326 200 330 102'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: top center;
+  background-size: 260px 300px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 88%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 88%);
+}
+
+/* Drafting grid — the graph paper a civil drawing is set out on. */
+.motif-grid::before {
+  height: 100%;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath d='M24 0 L0 0 0 24' fill='none' stroke='%2314110F' stroke-width='1'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-position: top center;
+  background-size: 24px 24px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 40%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 40%, transparent 100%);
+}

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Container } from '@/components/primitives/Container';
+import { SiteCredit } from '@/components/shared/SiteCredit';
 import { TeamBrowser } from '@/components/team/TeamBrowser';
 import { CHAPTER } from '@/data/chapter';
 import {
@@ -67,19 +68,19 @@ export default async function TeamPage({ params }: { params: Promise<Params> }) 
   const professions = getProfessionsForTeam(slug);
 
   return (
-    <main className="min-h-screen pb-16">
+    <main className="motif motif-grid min-h-screen pb-16">
       <Container>
         <header className="pb-6 pt-10">
-          <p className="text-micro uppercase text-ink-400">
-            {CHAPTER.name} · {CHAPTER.region}
+          <p className="rise text-micro uppercase text-ink-400">
+            {CHAPTER.name} · {CHAPTER.town}
           </p>
-          <h1 className="mt-3 font-display text-display-l text-ink">
+          <h1 className="rise rise-1 mt-3 font-display text-display-l text-ink">
             {found.name}
             <br />
             Power Team
           </h1>
           {/* The whole context for someone who arrived from a water bottle. */}
-          <p className="mt-4 max-w-[28rem] text-body-l text-ink-700">{found.tagline}</p>
+          <p className="rise rise-2 mt-4 max-w-[28rem] text-body-l text-ink-700">{found.tagline}</p>
         </header>
 
         {/* "Civil Power Team", not "Civil" — this string lands verbatim in the
@@ -92,11 +93,14 @@ export default async function TeamPage({ params }: { params: Promise<Params> }) 
 
         <footer className="mt-12 border-t border-hairline pt-6">
           <p className="text-meta text-ink-500">
-            Part of {CHAPTER.name}, {CHAPTER.region}.{' '}
+            Part of {CHAPTER.name}, {CHAPTER.town}.{' '}
             <Link href="/" className="text-ink underline underline-offset-4">
               About the chapter
             </Link>
           </p>
+          <div className="mt-3">
+            <SiteCredit />
+          </div>
         </footer>
       </Container>
     </main>

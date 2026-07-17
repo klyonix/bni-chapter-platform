@@ -33,8 +33,6 @@ The codebase serves the power teams of the chapter and their members:
 /                       Home (chapter power teams)
 /civil                  Power team: Civil          [QR landing — the real front door]
 /manufacturing          Power team: Manufacturing  [future]
-/healthcare             Power team: Healthcare     [future]
-/finance                Power team: Finance        [future]
 /civil/member/[slug]    Individual member profile
 ```
 
@@ -42,7 +40,7 @@ Member profiles are **team-scoped** (`/civil/member/hitesh-kumar`), not flat
 (`/member/hitesh-kumar`). The URL carries context, so a link pasted into WhatsApp
 reads as a Civil Power Team member and back navigation is unambiguous. The
 trade-off accepted: if a member changes power team their URL changes. Slugs are
-globally unique (enforced by `scripts/validate-data.ts`), so a redirect stub is
+globally unique by convention, so a redirect stub is
 cheap if that ever happens.
 
 Power teams are data-driven: `src/data/teams.ts` plus a member array registered in

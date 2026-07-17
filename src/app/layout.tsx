@@ -34,14 +34,22 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'BNI Azpire — Greater Coimbatore',
+    default: 'BNI Azpire — Pollachi',
     template: '%s | BNI Azpire',
   },
   description:
-    'The power teams of BNI Azpire, Greater Coimbatore. Find a trusted professional and contact them directly.',
+    'The power teams of BNI Azpire, Pollachi. Find a trusted professional and contact them directly.',
   applicationName: 'BNI Azpire',
   authors: [{ name: 'KlyONIX Tech Consulting Pvt Ltd' }],
-  keywords: ['BNI', 'BNI Azpire', 'Coimbatore', 'Power Team', 'Networking', 'Referrals'],
+  keywords: [
+    'BNI',
+    'BNI Azpire',
+    'Pollachi',
+    'Coimbatore',
+    'Power Team',
+    'Networking',
+    'Referrals',
+  ],
   icons: {
     // Favicon placeholder — replace public/favicon.ico with the real asset.
     icon: '/favicon.ico',
@@ -52,9 +60,9 @@ export const metadata: Metadata = {
     type: 'website',
     url: siteUrl,
     siteName: 'BNI Azpire',
-    title: 'BNI Azpire — Greater Coimbatore',
+    title: 'BNI Azpire — Pollachi',
     description:
-      'The power teams of BNI Azpire, Greater Coimbatore. Find a trusted professional and contact them directly.',
+      'The power teams of BNI Azpire, Pollachi. Find a trusted professional and contact them directly.',
     locale: 'en_IN',
     // TODO(content): og-default.png is still the scaffold placeholder.
     images: [
@@ -62,15 +70,15 @@ export const metadata: Metadata = {
         url: '/images/og-default.png',
         width: 1200,
         height: 630,
-        alt: 'BNI Azpire, Greater Coimbatore',
+        alt: 'BNI Azpire, Pollachi',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'BNI Azpire — Greater Coimbatore',
+    title: 'BNI Azpire — Pollachi',
     description:
-      'The power teams of BNI Azpire, Greater Coimbatore. Find a trusted professional and contact them directly.',
+      'The power teams of BNI Azpire, Pollachi. Find a trusted professional and contact them directly.',
     images: ['/images/og-default.png'],
   },
 };

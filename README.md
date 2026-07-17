@@ -30,26 +30,24 @@ are built yet — see [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 /                  Home (chapter power teams)
 /civil             Power team: Civil
 /manufacturing     Power team: Manufacturing
-/healthcare        Power team: Healthcare
-/finance           Power team: Finance
-/member/[slug]     Individual member profile
+/civil/member/[slug]   Individual member profile
 ```
 
 ---
 
 ## Tech stack
 
-| Area           | Choice                                             |
-| -------------- | -------------------------------------------------- |
-| Framework      | Next.js 15 (App Router)                            |
-| Language       | TypeScript (strict)                                |
-| Styling        | Tailwind CSS 3                                     |
-| Linting        | ESLint (`eslint-config-next`) + `eslint-config-prettier` |
-| Formatting     | Prettier (+ `prettier-plugin-tailwindcss`)         |
-| Git hooks      | Husky + lint-staged (pre-commit)                   |
-| CI/CD          | GitHub Actions                                     |
-| Hosting        | GitHub Pages (static export)                       |
-| Rendering      | Static Site Generation via `output: 'export'`      |
+| Area       | Choice                                                   |
+| ---------- | -------------------------------------------------------- |
+| Framework  | Next.js 15 (App Router)                                  |
+| Language   | TypeScript (strict)                                      |
+| Styling    | Tailwind CSS 3                                           |
+| Linting    | ESLint (`eslint-config-next`) + `eslint-config-prettier` |
+| Formatting | Prettier (+ `prettier-plugin-tailwindcss`)               |
+| Git hooks  | Husky + lint-staged (pre-commit)                         |
+| CI/CD      | GitHub Actions                                           |
+| Hosting    | GitHub Pages (static export)                             |
+| Rendering  | Static Site Generation via `output: 'export'`            |
 
 ---
 
@@ -103,16 +101,16 @@ Open http://localhost:3000.
 
 ### Useful scripts
 
-| Script                 | Description                                        |
-| ---------------------- | -------------------------------------------------- |
-| `npm run dev`          | Start the development server.                      |
-| `npm run build`        | Production build + static export to `out/`.        |
-| `npm run serve`        | Serve the exported `out/` locally to preview.      |
-| `npm run lint`         | Run ESLint.                                        |
-| `npm run lint:fix`     | Run ESLint with autofix.                           |
-| `npm run format`       | Format the codebase with Prettier.                 |
-| `npm run format:check` | Check formatting without writing.                  |
-| `npm run typecheck`    | Type-check with `tsc --noEmit`.                    |
+| Script                 | Description                                   |
+| ---------------------- | --------------------------------------------- |
+| `npm run dev`          | Start the development server.                 |
+| `npm run build`        | Production build + static export to `out/`.   |
+| `npm run serve`        | Serve the exported `out/` locally to preview. |
+| `npm run lint`         | Run ESLint.                                   |
+| `npm run lint:fix`     | Run ESLint with autofix.                      |
+| `npm run format`       | Format the codebase with Prettier.            |
+| `npm run format:check` | Check formatting without writing.             |
+| `npm run typecheck`    | Type-check with `tsc --noEmit`.               |
 
 ---
 

@@ -15,6 +15,15 @@ import type { Member } from '@/types';
  * Filtering is a synchronous array filter over data already in the HTML, so
  * there is no loading state and nothing to await. No search box: twelve members
  * do not justify asking someone standing at an event to type on a phone.
+ *
+ * No Motion in this list, deliberately — see docs/MOTION.md. Under LazyMotion,
+ * Motion's animation loop does not run in this stack: `initial` and `layout`
+ * projection values get applied and then never animate, which left cards either
+ * stranded at opacity 0 or displaced by ~2000px. All three failure modes were
+ * reproduced against a production build. A correct list beats an animated one.
+ *
+ * The filter's own feedback is the chip state plus the instant result, which is
+ * honest: the work here is synchronous, so there is nothing to animate through.
  */
 type Filter = ProfessionSlug | 'all';
 
@@ -29,13 +38,10 @@ export function TeamBrowser({
 }) {
   const [filter, setFilter] = useState<Filter>('all');
 
-  const visible = filter === 'all' ? members : members.filter((m) => m.profession === filter);
+  const visible = filter === 'all' ? members : members.filter((mem) => mem.profession === filter);
 
   return (
     <>
-      {/* Sticky so the filter stays reachable once the list is moving. Chips
-          are generated from professions that actually have members, which is
-          why an empty result is unreachable. */}
       {/* Solid, not translucent. A blurred bar is decoration the brief rules out,
           and text sliding under frosted glass is harder to read, not easier. */}
       <div className="sticky top-0 z-20 -mx-5 border-b border-hairline bg-paper px-5 py-3">

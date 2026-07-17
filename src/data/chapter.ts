@@ -6,6 +6,9 @@
  */
 export const CHAPTER = {
   name: 'BNI Azpire',
+  /** The town. Use this wherever a visitor is working out where these people are. */
+  town: 'Pollachi',
+  /** The formal BNI region. Use for the record, not for orienting a visitor. */
   region: 'Greater Coimbatore',
   officialUrl: 'https://bni-coimbatorerural.in/coimbatore-rural-bni-azpire/en-IN/index',
   meeting: { day: 'TBC', time: 'TBC', venue: 'TBC' },

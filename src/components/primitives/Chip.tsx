@@ -10,6 +10,9 @@ import { cn } from '@/utils/cn';
  *
  * Held at the 44px tap target even though it costs vertical space above the
  * fold, because one-handed use is the governing constraint here.
+ *
+ * `press` gives the tap response in CSS (see docs/MOTION.md for why not Motion).
+ * Staying a server-safe component keeps it out of the client bundle.
  */
 type ChipProps = {
   active?: boolean;
@@ -23,9 +26,8 @@ export function Chip({ active = false, children, className, ...props }: ChipProp
       type="button"
       aria-pressed={active}
       className={cn(
-        'inline-flex h-tap shrink-0 select-none items-center justify-center',
+        'press inline-flex h-tap shrink-0 select-none items-center justify-center',
         'whitespace-nowrap rounded-full border px-4 text-label',
-        'transition-colors duration-chip',
         active
           ? 'border-accent bg-accent text-surface'
           : 'border-hairline bg-surface text-ink-700 hover:bg-paper',
