@@ -18,6 +18,7 @@
     "lint:fix": "next lint --fix",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "brand": "node scripts/generate-brand.mjs",
     "typecheck": "tsc --noEmit",
     "prepare": "husky"
   },
