@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Container } from '@/components/primitives/Container';
 import { SiteCredit } from '@/components/shared/SiteCredit';
-import { ConstructionHero } from '@/components/team/ConstructionHero';
+import { TeamHero } from '@/components/team/TeamHero';
 import { MemberGrid } from '@/components/team/MemberGrid';
 import { CHAPTER } from '@/data/chapter';
 import { getLiveTeams, getMembersByTeam, getTeamBySlug } from '@/lib/members';
@@ -61,33 +61,31 @@ export default async function TeamPage({ params }: { params: Promise<Params> }) 
   const slug = found.slug as PowerTeamSlug;
   const members = getMembersByTeam(slug);
   const teamName = `${found.name} Power Team`;
+  const tradeCount = new Set(members.map((m) => m.profession)).size;
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-paper pb-24">
-      <ConstructionHero />
-
-      {/* Everything sits above the fixed scene. */}
       <div className="relative z-10">
         <Container width="wide">
-          {/* Tall enough to be a hero band: the construction scene is anchored to
-              the top of the viewport and needs room to be seen before the cards
-              start. Below this the cards cover it, and it fades out on scroll. */}
-          <header className="flex min-h-[52vh] flex-col justify-end pb-10 pt-14">
-            <p className="rise text-micro uppercase text-ink-400">
-              {CHAPTER.name} · {CHAPTER.town}
-            </p>
-            <h1 className="rise rise-1 mt-3 text-balance font-display text-display-l text-ink">
-              Our experts
-            </h1>
-            <p className="rise rise-2 mt-4 max-w-[34rem] text-body-l text-ink-700">
-              {found.tagline}
-            </p>
-            <p className="rise rise-3 mt-6 text-meta text-ink-400">
-              {members.length} members · tap a card to see contact details
-            </p>
-          </header>
+          <TeamHero
+            eyebrow={`${CHAPTER.name} · ${CHAPTER.town}`}
+            heading="Our experts"
+            description={found.tagline}
+            stats={[
+              { value: members.length, label: 'Members' },
+              { value: tradeCount, label: 'Trades' },
+            ]}
+            ctaLabel="Meet the team"
+            ctaHref="#members"
+          />
 
-          <MemberGrid members={members} teamName={teamName} />
+          <p className="mt-4 text-meta text-ink-400">
+            {members.length} members · tap a card to see contact details
+          </p>
+
+          <div id="members" className="mt-8 scroll-mt-20">
+            <MemberGrid members={members} teamName={teamName} />
+          </div>
 
           {/* End of the page: the frame tops out. */}
           <section className="mt-20 text-center">
