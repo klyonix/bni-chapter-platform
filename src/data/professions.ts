@@ -11,7 +11,7 @@
  */
 export const PROFESSIONS = [
   { slug: 'builder', label: 'Builder / Contractor', accent: '#F5A623', icon: 'building' },
-  { slug: 'tiles', label: 'Tiles', accent: '#F5A623', icon: 'grid' },
+  { slug: 'tiles', label: 'Tiles & Granites', accent: '#F5A623', icon: 'grid' },
   { slug: 'interior-decorator', label: 'Interior Decorator', accent: '#8B5CF6', icon: 'roller' },
   { slug: 'hardware', label: 'Hardware', accent: '#7C3AED', icon: 'wrench' },
   { slug: 'water-systems', label: 'Water Systems', accent: '#2F80ED', icon: 'drop' },
@@ -22,6 +22,8 @@ export const PROFESSIONS = [
   { slug: 'painter', label: 'Painter', accent: '#0891B2', icon: 'brush' },
   { slug: 'cement-concrete', label: 'Cement / Concrete', accent: '#B45309', icon: 'mixer' },
   { slug: 'land-promoter', label: 'Land Promoter', accent: '#DC2626', icon: 'plot' },
+  { slug: 'architecture', label: 'Architecture', accent: '#4F46E5', icon: 'grid' },
+  { slug: 'curtains-nets', label: 'Curtains & Nets', accent: '#DB2777', icon: 'roller' },
 ] as const;
 
 export type ProfessionSlug = (typeof PROFESSIONS)[number]['slug'];
