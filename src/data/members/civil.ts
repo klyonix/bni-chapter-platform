@@ -28,6 +28,7 @@ import type { Member } from '@/types';
 export const civilMembers: Member[] = [
   {
     slug: 'senthil-kumar-g',
+    order: 1,
     name: 'Senthil Kumar G',
     preferredName: 'Senthil Kumar',
     profession: 'land-promoter',
@@ -37,6 +38,7 @@ export const civilMembers: Member[] = [
   },
   {
     slug: 'nagulan-b',
+    order: 2,
     name: 'Nagulan Balakrishnan',
     preferredName: 'Nagulan',
     profession: 'architecture',
@@ -46,6 +48,7 @@ export const civilMembers: Member[] = [
   },
   {
     slug: 'sharan-rajkumar',
+    order: 3,
     name: 'Sharan Rajkumar GK',
     preferredName: 'Sharan',
     profession: 'builder',
@@ -55,6 +58,7 @@ export const civilMembers: Member[] = [
   },
   {
     slug: 'gopinath-r',
+    order: 4,
     name: 'Gopinath R',
     preferredName: 'Gopinath',
     profession: 'approvals',
@@ -64,6 +68,7 @@ export const civilMembers: Member[] = [
   },
   {
     slug: 'dhanabal-s',
+    order: 5,
     name: 'Dhanabal S',
     preferredName: 'Dhanabal',
     profession: 'cement-concrete',
@@ -73,6 +78,7 @@ export const civilMembers: Member[] = [
   },
   {
     slug: 'hitesh-patel',
+    order: 6,
     name: 'Hitesh Patel',
     preferredName: 'Hitesh',
     profession: 'windows-doors',
@@ -82,6 +88,7 @@ export const civilMembers: Member[] = [
   },
   {
     slug: 'dharmaraj-c',
+    order: 7,
     name: 'Dharmaraj Chinnasamy',
     preferredName: 'Dharmaraj',
     profession: 'false-ceiling',
@@ -91,6 +98,7 @@ export const civilMembers: Member[] = [
   },
   {
     slug: 'shivaji-v',
+    order: 8,
     name: 'Shivaji Venugopal',
     preferredName: 'Shivaji',
     profession: 'tiles',
@@ -100,6 +108,7 @@ export const civilMembers: Member[] = [
   },
   {
     slug: 'yuvaraj-v',
+    order: 9,
     name: 'Yuvaraj V',
     preferredName: 'Yuvaraj',
     profession: 'hardware',
@@ -109,6 +118,7 @@ export const civilMembers: Member[] = [
   },
   {
     slug: 'viswanathan-s',
+    order: 10,
     name: 'Viswanathan S',
     preferredName: 'Viswanathan',
     profession: 'interior-decorator',
@@ -118,6 +128,7 @@ export const civilMembers: Member[] = [
   },
   {
     slug: 'mohammed-sajid',
+    order: 11,
     name: 'Mohammed Sajid',
     preferredName: 'Sajid',
     profession: 'curtains-nets',
@@ -127,6 +138,7 @@ export const civilMembers: Member[] = [
   },
   {
     slug: 'raghvaran-d',
+    order: 12,
     name: 'Raghvaran D',
     preferredName: 'Raghvaran',
     profession: 'water-systems',
