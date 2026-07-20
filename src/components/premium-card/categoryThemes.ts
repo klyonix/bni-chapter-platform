@@ -103,10 +103,12 @@ const FAMILY_BY_PROFESSION: Record<ProfessionSlug, ThemeFamily> = {
   'cement-concrete': 'construction',
 
   tiles: 'structural',
+  architecture: 'structural',
   hardware: 'structural',
   'windows-doors': 'structural',
 
   'interior-decorator': 'interior',
+  'curtains-nets': 'interior',
   'false-ceiling': 'interior',
   painter: 'interior',
 
