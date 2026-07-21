@@ -425,10 +425,15 @@ function RelatedRow({ member, team }: { member: Member; team: string }) {
     >
       <span
         aria-hidden="true"
-        className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-meta font-semibold text-white"
+        className="grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-full text-meta font-semibold text-white"
         style={{ background: theme.accent }}
       >
-        {initials(member)}
+        {member.photo ? (
+          // eslint-disable-next-line @next/next/no-img-element -- static export, images unoptimized
+          <img src={member.photo} alt="" className="h-full w-full rounded-full object-cover" />
+        ) : (
+          initials(member)
+        )}
       </span>
       <span className="min-w-0 flex-1">
         <span className="block truncate text-label font-semibold text-ink">{member.name}</span>
