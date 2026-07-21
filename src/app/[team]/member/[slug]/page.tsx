@@ -169,7 +169,10 @@ export default async function MemberPage({ params }: { params: Promise<Params> }
               alt={member.name}
               width={112}
               height={112}
-              className="rise h-28 w-28 rounded-3xl object-cover"
+              // object-top: the supplied portraits are tall, full-figure cutouts,
+              // so a centred square crop lands on the chest. Anchor to the head.
+              className="rise h-28 w-28 rounded-3xl object-cover object-top"
+              style={{ background: accent }}
             />
           ) : (
             // Portraits are pending. Initials are a designed state — never a
