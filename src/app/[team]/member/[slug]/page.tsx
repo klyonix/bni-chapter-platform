@@ -169,9 +169,10 @@ export default async function MemberPage({ params }: { params: Promise<Params> }
               alt={member.name}
               width={112}
               height={112}
-              // object-top: the supplied portraits are tall, full-figure cutouts,
-              // so a centred square crop lands on the chest. Anchor to the head.
-              className="rise h-28 w-28 rounded-3xl object-cover object-top"
+              // Portraits are pre-cropped to a uniform head-and-shoulders square
+              // (see docs/PORTRAIT-SPEC.md); the trade accent sits behind the
+              // transparent cutout.
+              className="rise h-28 w-28 rounded-3xl object-cover"
               style={{ background: accent }}
             />
           ) : (
