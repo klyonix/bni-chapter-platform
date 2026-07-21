@@ -1,6 +1,7 @@
 'use client';
 
 import { useId, useState } from 'react';
+import { CompanyLogo } from '@/components/member/CompanyLogo';
 import { AnimatedIcon } from '@/components/premium-card/AnimatedIcon';
 import { Icon } from '@/components/ui/Icon';
 import { PremiumCard } from '@/components/premium-card/PremiumCard';
@@ -50,6 +51,13 @@ export function MemberCard({
   const profession = professionLabel(member.profession);
   const wa = whatsappNumber(member);
   const profileUrl = `/civil/member/${member.slug}/`;
+  // The collapsed card carries a soft wash in the company's own brand colour,
+  // glowing in from the top-right — a brand cue without the busy logo. The crisp
+  // logo itself still appears once the card is expanded. Members without a logo
+  // (no brand colour) simply get no wash.
+  const brandWash = member.brandColor
+    ? `radial-gradient(135% 125% at 100% 0%, ${member.brandColor}3d, ${member.brandColor}14 46%, transparent 70%)`
+    : undefined;
 
   /**
    * Save contact.
@@ -116,9 +124,25 @@ export function MemberCard({
         onClick={onToggle}
         aria-expanded={open}
         aria-controls={panelId}
-        className="flex w-full items-center gap-4 p-4 text-left"
+        className="relative flex w-full items-center gap-4 p-4 text-left"
       >
-        <span className="member-avatar" aria-hidden="true">
+        {/* Brand-colour wash, glowing in from the top-right. Decorative, behind
+            the content; renders nothing when a member has no brand colour. The
+            top corners are rounded to the card so the wash — strongest exactly at
+            the top-right — never squares off past the card's rounded edge. */}
+        {brandWash && (
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 z-0"
+            style={{
+              background: brandWash,
+              borderTopLeftRadius: 'calc(var(--radius-card) - 1px)',
+              borderTopRightRadius: 'calc(var(--radius-card) - 1px)',
+            }}
+          />
+        )}
+
+        <span className="member-avatar relative z-[1]" aria-hidden="true">
           {member.photo ? (
             // eslint-disable-next-line @next/next/no-img-element -- static export, images unoptimized
             <img
@@ -134,7 +158,7 @@ export function MemberCard({
           )}
         </span>
 
-        <span className="min-w-0 flex-1">
+        <span className="relative z-[1] min-w-0 flex-1">
           <span className="block truncate text-label font-semibold text-ink">{member.name}</span>
           <span className="mt-1 flex items-center gap-1.5" style={{ color: accent }}>
             <AnimatedIcon
@@ -147,7 +171,7 @@ export function MemberCard({
           <span className="mt-1 block truncate text-meta text-ink-400">{member.company}</span>
         </span>
 
-        <span aria-hidden="true" className="member-chevron text-ink-300 shrink-0">
+        <span aria-hidden="true" className="member-chevron text-ink-300 relative z-[1] shrink-0">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -166,6 +190,9 @@ export function MemberCard({
           grid 0fr→1fr trick. */}
       <div id={panelId} className="member-panel">
         <div className="border-t border-hairline px-4 pb-4 pt-4">
+          {/* Company logo, when we have one. Renders nothing otherwise. */}
+          <CompanyLogo src={member.companyLogo} company={member.company} className="mb-4 w-24" />
+
           {/* Rendered only when the member actually wrote one. No invented copy. */}
           {member.description && (
             <p className="mb-4 text-body text-ink-700">{member.description}</p>

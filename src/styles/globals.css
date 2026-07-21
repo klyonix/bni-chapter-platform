@@ -651,3 +651,151 @@ body {
   -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 88%);
   mask-image: linear-gradient(to bottom, #000 0%, transparent 88%);
 }
+
+/* ── Animated category aura behind the profile hero ──────────────────────────
+ * Soft blobs in the trade family's accent, drifting slowly — the same colour
+ * and pattern the card carries, now breathing. Colour and the pattern beneath
+ * already differ per category, so this reads as "this trade's atmosphere". The
+ * motion CHARACTER is the family's own idle (float drifts, pulse breathes,
+ * rotate orbits), set via data-motion, so systems and construction feel alive
+ * differently from land or interior. CSS-only, compositor transforms; reduced
+ * motion holds every blob still. */
+.profile-aura {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 0;
+  height: 34rem;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 84%);
+  mask-image: linear-gradient(to bottom, #000 0%, transparent 84%);
+}
+.profile-aura b {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  filter: blur(52px);
+  background: var(--member-accent);
+  will-change: transform, opacity;
+}
+.profile-aura .b1 {
+  width: 22rem;
+  height: 22rem;
+  top: -7rem;
+  right: -5rem;
+  opacity: 0.14;
+}
+.profile-aura .b2 {
+  width: 15rem;
+  height: 15rem;
+  top: 5rem;
+  left: -6rem;
+  opacity: 0.1;
+}
+.profile-aura .b3 {
+  width: 12rem;
+  height: 12rem;
+  top: 12rem;
+  right: 24%;
+  opacity: 0.07;
+}
+
+.profile-aura[data-motion='float'] .b1 {
+  animation: aura-float-1 15s ease-in-out infinite;
+}
+.profile-aura[data-motion='float'] .b2 {
+  animation: aura-float-2 19s ease-in-out infinite;
+}
+.profile-aura[data-motion='float'] .b3 {
+  animation: aura-float-3 23s ease-in-out infinite;
+}
+@keyframes aura-float-1 {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-2.5rem, 1.8rem);
+  }
+}
+@keyframes aura-float-2 {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(2.2rem, -1.2rem);
+  }
+}
+@keyframes aura-float-3 {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-1.6rem, -1.8rem);
+  }
+}
+
+.profile-aura[data-motion='pulse'] .b1 {
+  animation: aura-pulse-1 9s ease-in-out infinite;
+}
+.profile-aura[data-motion='pulse'] .b2 {
+  animation: aura-pulse-2 11s ease-in-out infinite;
+}
+.profile-aura[data-motion='pulse'] .b3 {
+  animation: aura-pulse-3 13s ease-in-out infinite;
+}
+@keyframes aura-pulse-1 {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.13;
+  }
+  50% {
+    transform: scale(1.18);
+    opacity: 0.2;
+  }
+}
+@keyframes aura-pulse-2 {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.1;
+  }
+  50% {
+    transform: scale(1.16);
+    opacity: 0.15;
+  }
+}
+@keyframes aura-pulse-3 {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.07;
+  }
+  50% {
+    transform: scale(1.22);
+    opacity: 0.12;
+  }
+}
+
+/* Rotate — the trio orbits a shared centre. A spin wrapper carries them. */
+.profile-aura[data-motion='rotate'] .orbit {
+  position: absolute;
+  inset: 0;
+  transform-origin: 62% 34%;
+  animation: aura-orbit 46s linear infinite;
+}
+@keyframes aura-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-aura b,
+  .profile-aura .orbit {
+    animation: none !important;
+  }
+}

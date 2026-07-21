@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { CompanyLogo } from '@/components/member/CompanyLogo';
 import { SaveContactButton } from '@/components/member/SaveContactButton';
 import { ShareButton } from '@/components/member/ShareButton';
 import { CategoryBadge } from '@/components/premium-card/CategoryBadge';
@@ -150,6 +151,16 @@ export default async function MemberPage({ params }: { params: Promise<Params> }
         }
       />
 
+      {/* Animated category aura: accent-coloured blobs that drift, breathe or
+          orbit per the trade family's own idle. Decorative, behind everything. */}
+      <div aria-hidden="true" className="profile-aura" data-motion={theme.iconMotion}>
+        <div className="orbit">
+          <b className="b1" />
+          <b className="b2" />
+          <b className="b3" />
+        </div>
+      </div>
+
       <Container>
         <div className="relative z-10 py-4">
           <Link
@@ -192,6 +203,12 @@ export default async function MemberPage({ params }: { params: Promise<Params> }
             <CategoryBadge profession={member.profession} />
           </div>
           <p className="rise rise-3 mt-3 text-body-l text-ink-700">{member.company}</p>
+          {/* Company logo, when supplied. Renders nothing otherwise. */}
+          <CompanyLogo
+            src={member.companyLogo}
+            company={member.company}
+            className="rise rise-3 mt-4 w-32"
+          />
         </header>
 
         {/* ── Primary contact. Also above the fold — the point of the page. ─── */}
@@ -425,10 +442,15 @@ function RelatedRow({ member, team }: { member: Member; team: string }) {
     >
       <span
         aria-hidden="true"
-        className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-meta font-semibold text-white"
+        className="grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-full text-meta font-semibold text-white"
         style={{ background: theme.accent }}
       >
-        {initials(member)}
+        {member.photo ? (
+          // eslint-disable-next-line @next/next/no-img-element -- static export, images unoptimized
+          <img src={member.photo} alt="" className="h-full w-full rounded-full object-cover" />
+        ) : (
+          initials(member)
+        )}
       </span>
       <span className="min-w-0 flex-1">
         <span className="block truncate text-label font-semibold text-ink">{member.name}</span>

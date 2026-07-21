@@ -38,8 +38,14 @@ export interface Member {
   preferredName: string;
   profession: ProfessionSlug;
   company: string;
-  /** Shown on the profile, never on the card. */
+  /** Company logo chip, shown on the profile and the expanded card. */
   companyLogo?: string;
+  /**
+   * The company's dominant brand colour (hex), sampled from its logo. Drives a
+   * soft brand-tinted wash on the collapsed card. Optional: a member without a
+   * logo simply gets no wash.
+   */
+  brandColor?: string;
   /** Optional while the shoot is pending. Absent renders initials. */
   photo?: string;
   /** Array from the start: a member in two teams later costs no migration. */
