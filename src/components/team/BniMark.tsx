@@ -6,18 +6,23 @@ import { useEffect, useRef, useState } from 'react';
 /**
  * The BNI brand mark, as a short logo-reveal video, sitting on the hero eyebrow.
  *
- * ── Why muted, and why a tap ─────────────────────────────────────────────────
- * The clip has audio, but no browser will autoplay sound without a prior user
- * gesture — a QR visitor lands with none, so sound-on-load is impossible, not a
- * setting we forgot. So it autoplays MUTED (which is always allowed) and the
- * whole mark is a button: a tap unmutes and replays from the top, and that tap
- * is the gesture that lets the audio through.
+ * ── Autoplay, muted, looping ─────────────────────────────────────────────────
+ * The native `autoPlay muted loop playsInline` attributes are the reliable way
+ * to autoplay on load — more so than a JS play() call, which iOS Safari in
+ * particular can refuse. Muted is what makes autoplay allowed at all; loop keeps
+ * the mark alive rather than freezing after one pass.
+ *
+ * ── Why the sound needs a tap ────────────────────────────────────────────────
+ * The clip has audio, but no browser will autoplay SOUND without a prior user
+ * gesture — a QR visitor lands with none. So the whole mark is a button: a tap
+ * unmutes and replays from the top (one pass, so the audio doesn't loop), and
+ * that tap is the gesture that lets the sound through.
  *
  * ── Poster + reduced motion ──────────────────────────────────────────────────
  * The poster is the resting logo frame, so the mark reads as the BNI logo before
  * a single byte of video arrives and if the video never loads at all. Under
- * prefers-reduced-motion we never autoplay — the poster simply stands in as a
- * still logo — but a deliberate tap still plays it, sound and all.
+ * prefers-reduced-motion the loop is paused — the still logo stands in — but a
+ * deliberate tap still plays it, sound and all.
  *
  * The source is a self-hosted 720p .mp4 (H.264/AAC). The original was a 4K .mov;
  * the .mov container is unreliable in Android Chrome and in-app webviews, which
@@ -30,15 +35,16 @@ export function BniMark() {
 
   useEffect(() => {
     const v = videoRef.current;
-    if (!v || reduced) return;
-    // Muted autoplay: allowed everywhere, and a no-op where a policy still
-    // blocks it — the poster stays, which is the same resting logo.
-    v.play().catch(() => {});
+    if (!v) return;
+    // The video autoplays natively; reduced motion holds it on the still logo.
+    if (reduced) v.pause();
+    else v.play().catch(() => {});
   }, [reduced]);
 
   function playWithSound() {
     const v = videoRef.current;
     if (!v) return;
+    v.loop = false; // one pass with sound, then it rests on the logo
     v.muted = false;
     v.currentTime = 0;
     setSoundOn(true);
@@ -56,9 +62,11 @@ export function BniMark() {
       <video
         ref={videoRef}
         poster="/images/bni-poster.jpg"
+        autoPlay
         muted
+        loop
         playsInline
-        preload="metadata"
+        preload="auto"
         className="h-full w-full object-cover"
       >
         <source src="/bni.mp4" type="video/mp4" />
