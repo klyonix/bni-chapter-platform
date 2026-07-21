@@ -12,18 +12,18 @@
 export const PROFESSIONS = [
   { slug: 'builder', label: 'Builder / Contractor', accent: '#F5A623', icon: 'building' },
   { slug: 'tiles', label: 'Tiles & Granites', accent: '#F5A623', icon: 'grid' },
-  { slug: 'interior-decorator', label: 'Interior Decorator', accent: '#8B5CF6', icon: 'roller' },
-  { slug: 'hardware', label: 'Hardware', accent: '#7C3AED', icon: 'wrench' },
-  { slug: 'water-systems', label: 'Water Systems', accent: '#2F80ED', icon: 'drop' },
+  { slug: 'interior-decorator', label: 'Interior Decorator', accent: '#8B5CF6', icon: 'sofa' },
+  { slug: 'hardware', label: 'Hardware', accent: '#7C3AED', icon: 'bolt' },
+  { slug: 'water-systems', label: 'Water Systems', accent: '#2F80ED', icon: 'faucet' },
   { slug: 'building-materials', label: 'Building Materials', accent: '#546376', icon: 'layers' },
   { slug: 'windows-doors', label: 'Windows & Doors', accent: '#D6336C', icon: 'window' },
   { slug: 'approvals', label: 'LPA / DTCP Approval', accent: '#0E9F6E', icon: 'stamp' },
   { slug: 'false-ceiling', label: 'False Ceiling', accent: '#C2410C', icon: 'ceiling' },
   { slug: 'painter', label: 'Painter', accent: '#0891B2', icon: 'brush' },
-  { slug: 'cement-concrete', label: 'Cement / Concrete', accent: '#B45309', icon: 'mixer' },
+  { slug: 'cement-concrete', label: 'Cement / Concrete', accent: '#B45309', icon: 'cementbag' },
   { slug: 'land-promoter', label: 'Land Promoter', accent: '#DC2626', icon: 'plot' },
-  { slug: 'architecture', label: 'Architecture', accent: '#4F46E5', icon: 'grid' },
-  { slug: 'curtains-nets', label: 'Curtains & Nets', accent: '#DB2777', icon: 'roller' },
+  { slug: 'architecture', label: 'Architecture', accent: '#4F46E5', icon: 'compass' },
+  { slug: 'curtains-nets', label: 'Curtains & Nets', accent: '#DB2777', icon: 'curtain' },
 ] as const;
 
 export type ProfessionSlug = (typeof PROFESSIONS)[number]['slug'];
