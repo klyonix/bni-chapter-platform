@@ -2,6 +2,7 @@
 
 import { animate, m, useInView, useReducedMotion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
+import { BniMark } from '@/components/team/BniMark';
 import { DotLottie } from '@/components/ui/DotLottie';
 import { useScrollFade, useScrollDrift } from '@/hooks/useScrollFade';
 
@@ -68,7 +69,10 @@ export function TeamHero({
       <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-8">
         {/* Left column: heading, description, counters, CTA. */}
         <m.div style={{ opacity, y }} className="relative z-10 order-2 lg:order-1">
-          <p className="rise text-micro uppercase tracking-wide text-ink-400">{eyebrow}</p>
+          <div className="rise flex items-center gap-2.5">
+            <BniMark />
+            <p className="text-micro uppercase tracking-wide text-ink-400">{eyebrow}</p>
+          </div>
           <h1 className="rise rise-1 mt-3 text-balance font-display text-display-l text-ink">
             {heading}
           </h1>
@@ -115,7 +119,7 @@ export function TeamHero({
           style={{ opacity: artOpacity, y: artY }}
           className="pointer-events-none relative -z-10 order-1 mx-auto w-full max-w-[420px] lg:z-0 lg:order-2"
         >
-          <DotLottie src={lottieSrc} className="aspect-[1200/1080] w-full" />
+          <DotLottie src={lottieSrc} className="aspect-[1000/678] w-full" />
         </m.div>
       </div>
     </section>

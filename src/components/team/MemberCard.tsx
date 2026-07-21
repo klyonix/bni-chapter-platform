@@ -124,9 +124,10 @@ export function MemberCard({
             <img
               src={member.photo}
               alt=""
-              // object-top: portraits are tall, full-figure cutouts; a centred
-              // square crop lands on the chest, so anchor to the head.
-              className="h-full w-full rounded-full object-cover object-top"
+              // Portraits are pre-cropped to a uniform head-and-shoulders square
+              // (see docs/PORTRAIT-SPEC.md), so object-cover fills the circle
+              // consistently across all members.
+              className="h-full w-full rounded-full object-cover"
             />
           ) : (
             initials(member)
