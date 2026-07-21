@@ -119,7 +119,18 @@ export function MemberCard({
         className="flex w-full items-center gap-4 p-4 text-left"
       >
         <span className="member-avatar" aria-hidden="true">
-          {initials(member)}
+          {member.photo ? (
+            // eslint-disable-next-line @next/next/no-img-element -- static export, images unoptimized
+            <img
+              src={member.photo}
+              alt=""
+              // object-top: portraits are tall, full-figure cutouts; a centred
+              // square crop lands on the chest, so anchor to the head.
+              className="h-full w-full rounded-full object-cover object-top"
+            />
+          ) : (
+            initials(member)
+          )}
         </span>
 
         <span className="min-w-0 flex-1">
