@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Container } from '@/components/primitives/Container';
 import { Hairline } from '@/components/primitives/Section';
 import { SiteCredit } from '@/components/shared/SiteCredit';
+import { BniMark } from '@/components/team/BniMark';
 import { MarketMark } from '@/components/home/MarketMark';
 import { PollachiHorizon } from '@/components/home/PollachiHorizon';
 import { RidgeRule } from '@/components/home/RidgeRule';
@@ -28,8 +29,12 @@ export default function HomePage() {
       <Container>
         <section className="pt-16">
           {/* A dateline, not a tagline: where these people are and since when.
-              Founding year does quiet trust work that no adjective can. */}
-          <p className="rise text-micro uppercase text-ink-400">{CHAPTER.name} · Founded 2019</p>
+              Founding year does quiet trust work that no adjective can. The BNI
+              mark sits alongside it, same as the team page eyebrow. */}
+          <div className="rise flex items-center gap-2.5">
+            <BniMark />
+            <p className="text-micro uppercase text-ink-400">{CHAPTER.name} · Founded 2019</p>
+          </div>
           {/* text-balance evens the line lengths instead of leaving "work."
               orphaned on its own line. A hand-placed <br> only ever looks right
               at one width. */}
